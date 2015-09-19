@@ -20,7 +20,7 @@ requires = [
 setup(name='tenyu',
       version='0.0',
       description='tenyu',
-      long_description="tenyu is five double u's"
+      long_description="tenyu is five double u's",
       classifiers=[
         "Programming Language :: Python",
         "Framework :: Pyramid",
