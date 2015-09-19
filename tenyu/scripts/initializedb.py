@@ -11,12 +11,8 @@ from pyramid.paster import (
 
 from pyramid.scripts.common import parse_vars
 
-from ..models import (
-    DBSession,
-    MyModel,
-    Base,
-    )
-
+from trumpet.models.base import DBSession, Base
+from trumpet.models.usergroup import populate as populate_users
 
 def usage(argv):
     cmd = os.path.basename(argv[0])
@@ -35,6 +31,10 @@ def main(argv=sys.argv):
     engine = engine_from_config(settings, 'sqlalchemy.')
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
-    with transaction.manager:
-        model = MyModel(name='one', value=1)
-        DBSession.add(model)
+    populate_users()
+    #pages_dir = settings['default.pages.directory']
+    #populate_sitetext(pages_dir)
+    
+if __name__ == '__main__':
+    main()
+    

@@ -6,11 +6,12 @@ from sqlalchemy.orm import sessionmaker
 from trumpet.security import authn_policy, authz_policy
 from trumpet.config import add_static_views
 
-#from cenotaph.models.base import DBSession, Base
 from trumpet.models.base import DBSession, Base
 from trumpet.models.usergroup import User
+#import trumpet.models.sitecontent
 
-#import cenotaph.models.sitecontent
+# FIXME -- APIROOT needs to be in config
+APIROOT = '/rest/v0'
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
@@ -19,7 +20,7 @@ def main(global_config, **settings):
     settings['db.sessionmaker'] = DBSession
     settings['db.usermodel'] = User
     settings['db.usernamefield'] = 'username'
-    
+
     DBSession.configure(bind=engine)
     Base.metadata.bind = engine
     Base.metadata.create_all(engine)
@@ -52,7 +53,7 @@ def main(global_config, **settings):
     if serve_static_assets:
         add_static_views(config, settings)
         
-    #config.scan('cenotaph.views.currentuser')
-    #config.scan('cenotaph.views.useradmin')
-    #config.scan('cenotaph.views.sitetext')
+    config.scan('tenyu.views.currentuser')
+    #config.scan('tenyu.views.useradmin')
+    #config.scan('tenyu.views.sitetext')
     return config.make_wsgi_app()
