@@ -49,7 +49,7 @@ from trumpet.models.base import SerialBase
 
 RoleType = Enum('admin', 'host', 'user', 'guest', name='tu_roletype')
 
-class Address(Base):
+class Address(Base, SerialBase):
     __tablename__ = 'tu_addresses'
     id = Column(Integer, primary_key=True)
     street = Column(Unicode(150))
@@ -58,7 +58,7 @@ class Address(Base):
     state = Column(Unicode(2))
     zip = Column(Unicode(10))
     
-class Contact(Base):
+class Contact(Base, SerialBase):
     __tablename__ = 'tu_contacts'
     id = Column(Integer, primary_key=True)
     firstname = Column(Unicode(50))
@@ -78,7 +78,7 @@ class Contact(Base):
             self.phone = phone
             
 
-class Audience(Base):
+class Audience(Base, SerialBase):
     __tablename__ = 'tu_audiences'
     id = Column(Integer, primary_key=True)
     location = Column(Unicode(50), unique=True)
@@ -86,7 +86,7 @@ class Audience(Base):
     def __init__(self, location=None):
         self.location = location
         
-class Venue(Base):
+class Venue(Base, SerialBase):
     __tablename__ = 'tu_venues'
     id = Column(Integer, primary_key=True)
     name = Column(Unicode(50), unique=True)
@@ -104,7 +104,7 @@ class Venue(Base):
         self.description = None
         self.image_id = None
     
-class EventType(Base):
+class EventType(Base, SerialBase):
     __tablename__ = 'tu_event_types'
     id = Column(Integer, primary_key=True)
     name = Column(Unicode(50), unique=True)
@@ -113,7 +113,7 @@ class EventType(Base):
         self.name = name
     
 
-class EventTypeColor(Base):
+class EventTypeColor(Base, SerialBase):
     __tablename__ = 'tu_event_type_colors'
     id = Column(Integer, ForeignKey('event_types.id'), primary_key=True)
     color = Column(Unicode(10))
@@ -122,7 +122,7 @@ class EventTypeColor(Base):
         self.color = color
         
     
-class Event(Base):
+class Event(Base, SerialBase):
     __tablename__ = 'tu_events'
     id = Column(Integer, primary_key=True)
     start_date = Column(Date)
@@ -140,7 +140,7 @@ class Event(Base):
         self.originator = originator
     
         
-class EventVenue(Base):
+class EventVenue(Base, SerialBase):
     __tablename__ = 'tu_event_venues'
     event_id = Column(Integer,
                       ForeignKey('tu_events.id'), primary_key=True)
@@ -151,8 +151,7 @@ class EventVenue(Base):
         self.event_id = event_id
         self.venue_id = venue_id
         
-
-class VenueInfo(Base):
+class VenueInfo(Base, SerialBase):
     __tablename__ = 'tu_venue_info'
     id = Column(Integer,
                       ForeignKey('tu_venues.id'), primary_key=True)
@@ -164,7 +163,16 @@ class VenueInfo(Base):
         
     
 """    
-class HostedEvent(Base):
+# this are the venues that a host plans
+# events for
+class HostedVenue(Base):
+    __tablename__ = 'hosted_venues'
+    account_id = Column(Integer,
+                     ForeignKey('tu_accounts.id'), primary_key=True)
+    venue_id = Column(Integer,
+                      ForeignKey('tu_venues.id'), primary_key=True)
+
+class HostedEvent(Base, SerialBase):
     __tablename__ = 'hosted_events'
     event_venue_id = Column(Integer,
                             ForeignKey('event_venues.id'), primary_key=True)
@@ -177,13 +185,13 @@ class HostedEvent(Base):
         
 """
 
-class Festival(Base):
+class Festival(Base, SerialBase):
     __tablename__ = 'tu_festivals'
     id = Column(Integer, primary_key=True)
 
 
 
-class FestivalEvent(Base):
+class FestivalEvent(Base, SerialBase):
     __tablename__ = 'tu_festival_events'
     festival_id = Column(Integer, ForeignKey('festivals.id'), primary_key=True)
     event_id = Column(Integer, ForeignKey('events.id'), primary_key=True)
@@ -195,7 +203,7 @@ class FestivalEvent(Base):
 
 
 
-class Account(Base):
+class Account(Base, SerialBase):
     __tablename__ = 'tu_accounts'
     id = Column(Integer, primary_key=True)
     username = Column(Unicode(50), unique=True)
@@ -216,7 +224,7 @@ class Account(Base):
         return [g.name for g in self.groups]
     
 
-class Password(Base):
+class Password(Base, SerialBase):
     __tablename__ = 'tu_passwords'
     account_id = Column(Integer, ForeignKey('tu_accounts.id'), primary_key=True)
     password = Column(Unicode(150))
@@ -226,7 +234,7 @@ class Password(Base):
         self.password = password
 
 
-class Group(Base):
+class Group(Base, SerialBase):
     __tablename__ = 'tu_groups'
     id = Column(Integer, primary_key=True)
     name = Column(Unicode(50), unique=True)
@@ -234,7 +242,7 @@ class Group(Base):
     def __init__(self, name):
         self.name = name
 
-class AccountGroup(Base):
+class AccountGroup(Base, SerialBase):
     __tablename__ = 'tu_group_account'
     group_id = Column(Integer, ForeignKey('tu_groups.id'), primary_key=True)
     account_id = Column(Integer, ForeignKey('tu_accounts.id'), primary_key=True)
@@ -259,4 +267,4 @@ Event.venue = relationship(Venue, backref='venue_id')
 
 # list tables to drop them when testing
 models = [Contact, Audience, Venue, EventType, Event,
-          EventVenue, User, Password, Group, UserGroup]
+          EventVenue, Account, Password, Group, UserGroup]

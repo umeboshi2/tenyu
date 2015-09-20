@@ -11,13 +11,14 @@ from sqlalchemy.exc import IntegrityError
 
 from sqlalchemy.orm import relationship, backref
 
-from trumpet.models.base import DBSession, Base
-from trumpet.models.sitecontent import SiteText, SiteImage
+from trumpet.models.base import DBSession, Base, SerialBase
+
+from tenyu.models.sitecontent import SiteText, SiteImage
 
 
-class HostImage(Base):
-    __tablename__ = 'host_images'
-    user_id = Column(Integer, ForeignKey('users.id'), primary_key=True)
+class HostImage(Base, SerialBase):
+    __tablename__ = 'tu_host_images'
+    account_id = Column(Integer, ForeignKey('tu_accounts.id'), primary_key=True)
     image_id = Column(Integer, ForeignKey('site_images.id'), primary_key=True)
     image = relationship(SiteImage)
     
@@ -26,9 +27,9 @@ class HostImage(Base):
         self.user_id = user_id
         self.image_id = image_id
         
-class VenueImage(Base):
-    __tablename__ = 'venue_images'
-    venue_id = Column(Integer, ForeignKey('venues.id'), primary_key=True)
+class VenueImage(Base, SerialBase):
+    __tablename__ = 'tu_venue_images'
+    venue_id = Column(Integer, ForeignKey('tu_venues.id'), primary_key=True)
     image_id = Column(Integer, ForeignKey('site_images.id'))
 
     def __init__(self, venue_id, image_id):
