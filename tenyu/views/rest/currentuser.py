@@ -10,7 +10,7 @@ from trumpet.views.base import BaseUserView
 
 from trumpet.models.usergroup import User
 
-from tenyu import APIROOT
+from tenyu.views.rest import APIROOT
     
 rscroot = os.path.join(APIROOT, 'main')
 

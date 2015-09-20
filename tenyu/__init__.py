@@ -8,7 +8,8 @@ from trumpet.config import add_static_views
 
 from trumpet.models.base import DBSession, Base
 from trumpet.models.usergroup import User
-#import trumpet.models.sitecontent
+
+import tenyu.models.sitecontent
 
 # FIXME -- APIROOT needs to be in config
 APIROOT = '/rest/v0'
@@ -53,7 +54,7 @@ def main(global_config, **settings):
     if serve_static_assets:
         add_static_views(config, settings)
         
-    config.scan('tenyu.views.currentuser')
-    #config.scan('tenyu.views.useradmin')
-    #config.scan('tenyu.views.sitetext')
+    config.scan('tenyu.views.rest.currentuser')
+    config.scan('tenyu.views.rest.useradmin')
+    config.scan('tenyu.views.rest.sitetext')
     return config.make_wsgi_app()
