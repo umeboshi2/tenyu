@@ -29,7 +29,7 @@ define (require, exports, module) ->
       
       
     
-  MainBus.commands.setHandler 'applet:vtdendro:route', () ->
+  MainChannel.reqres.setHandler 'applet:vtdendro:route', () ->
     console.log "vtdendro:route being handled..."
     controller = new Controller MainChannel
     router = new Router

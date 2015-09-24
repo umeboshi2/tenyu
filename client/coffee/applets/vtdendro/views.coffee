@@ -3,7 +3,7 @@ define (require, exports, module) ->
   Marionette = require 'marionette'
   Masonry = require 'masonry'
   imagesLoaded = require 'imagesloaded'
-  require 'qs'
+  qs = require 'qs'
   require 'jquery-ui'
   ft = require 'furniture'
   
@@ -12,9 +12,8 @@ define (require, exports, module) ->
   Models = require 'vtdendro/models'
   
   BaseModels = require 'models'
-  BaseSideBarView = require 'common/views/sidebar'
-  PageableView = require 'common/views/pageable'
-  
+  BaseSideBarView = ft.views.sidebar
+  PageableView = ft.views.pageable
 
   MainChannel = Backbone.Wreqr.radio.channel 'global'
   AppChannel = Backbone.Wreqr.radio.channel 'vtdendro'

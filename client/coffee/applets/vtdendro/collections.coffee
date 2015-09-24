@@ -3,7 +3,7 @@ define (require, exports, module) ->
   _ = require 'underscore'
   Backbone = require 'backbone'
   PageableCollection = require 'backbone.paginator'
-  require 'qs'
+  qs = require 'qs'
   localStorage = require 'bblocalStorage'
   ft = require 'furniture'
 
