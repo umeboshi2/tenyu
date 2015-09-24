@@ -1,12 +1,12 @@
 define (require, exports, module) ->
   ft = require 'furniture'
   AppRegions = ft.misc.appregions
+  BaseAppModel = ft.models.base.BaseAppModel
 
-  appmodel = new Backbone.Model
+  appmodel = new BaseAppModel
     brand:
       name: 'Chassis'
       url: '/'
-    frontdoor_app: 'frontdoor'
     hasUser: true
     applets:
       [
@@ -27,11 +27,12 @@ define (require, exports, module) ->
         }
       ]
     regions: AppRegions.user_appregions
-    routes: [
-      'frontdoor:route'
-      'wiki:route'
-      'bumblr:route'
-      'hubby:route'
+    frontdoor_sidebar:
+      [
+        {
+          name: 'Lorax'
+          url: '/app/lorax'
+        }
       ]
       
   module.exports = appmodel

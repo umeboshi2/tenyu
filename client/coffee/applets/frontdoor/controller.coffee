@@ -16,35 +16,11 @@ define (require, exports, module) ->
 
   { SideBarController } = ft.controllers.sidebar
 
-  make_sidebar_data = (appmodel) ->
-    null
-    
-  side_bar_data = new Backbone.Model
-    entries: [
-      {
-        name: 'Home'
-        url: '#'
-      }
-      {
-        name: 'Wiki'
-        url: '#wiki'
-      }
-      {
-        name: 'Bumblr'
-        url: '#bumblr'
-      }
-      {
-        name: 'Hubby'
-        url: '#hubby'
-      }
-      ]
-      
 
   class Controller extends SideBarController
     mainbus: MainChannel
     sidebarclass: Views.SideBarView
-    sidebar_model: side_bar_data
-      
+
     make_main_content: ->
       #console.log "make_main_content called in frontdoor/controller"
       @make_sidebar()

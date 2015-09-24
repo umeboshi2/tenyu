@@ -4,13 +4,13 @@ define (require, exports, module) ->
   _ = require 'underscore'
   Backbone = require 'backbone'
   ft = require 'furniture'
+  BaseAppModel = ft.models.base.BaseAppModel
   
-  appmodel = new Backbone.Model
+  appmodel = new BaseAppModel
     hasUser: true
     brand:
       name: 'Chassis'
       url: '/'
-    frontdoor_app: 'frontdoor'
     applets:
       [
         {
@@ -25,10 +25,6 @@ define (require, exports, module) ->
         }
       ]
     regions: ft.misc.appregions.user_appregions
-    routes: [
-      'frontdoor:route'
-      ]
-    
   
   module.exports = appmodel
   

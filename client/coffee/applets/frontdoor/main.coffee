@@ -20,11 +20,15 @@ define (require, exports, module) ->
       'frontdoor': 'start'
       
   MainChannel.reqres.setHandler 'applet:frontdoor:route', () ->
-    console.log "frontdoor:route being handled"
+    #console.log "frontdoor:route being handled"
+    appmodel = MainChannel.reqres.request 'main:app:appmodel'
+    sidebar_data = new Backbone.Model
+      entries: appmodel.get 'frontdoor_sidebar'
     page_collection = WikiChannel.reqres.request 'pages:collection'
     response = page_collection.fetch()
     response.done =>
       controller = new Controller MainChannel
+      controller.sidebar_model = sidebar_data
       router = new Router
         controller: controller
-      console.log 'frontdoor router created'
+      #console.log 'frontdoor router created'
