@@ -57,4 +57,11 @@ def main(global_config, **settings):
     config.scan('tenyu.views.rest.currentuser')
     config.scan('tenyu.views.rest.useradmin')
     config.scan('tenyu.views.rest.sitetext')
+    config.scan('tenyu.views.rest.vtstuff')
+    config.scan('tenyu.views.rest.wikipages')
+    
+    if 'default.vtimages.directory' in settings:
+        vpath = settings['default.vtimages.directory']
+        config.add_static_view('vtimages', path=vpath)
+
     return config.make_wsgi_app()
