@@ -39,7 +39,7 @@ define (require, exports, module) ->
   class Controller extends SideBarController
     mainbus: MainChannel
     sidebarclass: Views.SideBarView
-    sidebar_model: side_bar_data
+    #sidebar_model: side_bar_data
       
     make_main_content: ->
       @make_sidebar()

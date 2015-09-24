@@ -23,7 +23,11 @@ define (require, exports, module) ->
     #page_collection = WikiChannel.reqres.request 'get-pages'
     #response = page_collection.fetch()
     #response.done =>
+    appmodel = MainChannel.reqres.request 'main:app:appmodel'
+    sidebar_data = new Backbone.Model
+      entries: appmodel.get 'frontdoor_sidebar'
     controller = new Controller MainChannel
+    controller.sidebar_model = sidebar_data
     router = new Router
       controller: controller
     #console.log 'router created'

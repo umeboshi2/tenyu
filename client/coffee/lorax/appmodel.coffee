@@ -7,7 +7,7 @@ define (require, exports, module) ->
     brand:
       name: 'Lorax'
       url: '#'
-    frontdoor_app: 'frontdoor'
+    hasUser: true
     applets:
       [
         {
@@ -16,27 +16,12 @@ define (require, exports, module) ->
           url: '#wiki'
         }
         {
-          appname: 'bumblr'
-          name: 'Bumblr'
-          url: '#bumblr'
-        }
-        {
-          appname: 'hubby'
-          name: 'Hubby'
-          url: '#hubby'
-        }
-        {
-          appname: 'bookstore'
-          name: 'Bookstore'
-          url: '#bookstore'
-        }
-        {
           appname: 'vtdendro'
           name: 'VTDendro'
           url: '#vtdendro'
         }
       ]
-    regions: AppRegions.basic_appregions
+    regions: AppRegions.user_appregions
     routes: [
       'frontdoor:route'
       'wiki:route'
