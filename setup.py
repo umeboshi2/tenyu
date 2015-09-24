@@ -15,6 +15,10 @@ requires = [
     'waitress',
     'requests',
     'cornice',
+    'beautifulsoup4',
+    'lxml',
+    'mechanize',
+    
     ]
 
 setup(name='tenyu',
