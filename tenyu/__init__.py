@@ -78,6 +78,7 @@ def main(global_config, **settings):
     config.scan('tenyu.views.rest.sitetext')
     config.scan('tenyu.views.rest.vtstuff')
     config.scan('tenyu.views.rest.wikipages')
+    config.scan('tenyu.views.rest.ghub')
     
     if 'default.vtimages.directory' in settings:
         vpath = settings['default.vtimages.directory']
