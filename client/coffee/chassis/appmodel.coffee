@@ -16,6 +16,11 @@ define (require, exports, module) ->
           url: '#wiki'
         }
         {
+          appname: 'github'
+          name: 'Github'
+          url: '#github'
+        }
+        {
           appname: 'bumblr'
           name: 'Bumblr'
           url: '#bumblr'

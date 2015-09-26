@@ -36,6 +36,7 @@ require.config
 
     
     # applets
+    github: '../applets/github'
     hubby: '../applets/hubby'
     bumblr: '../applets/bumblr'
     wiki: '../applets/wiki'

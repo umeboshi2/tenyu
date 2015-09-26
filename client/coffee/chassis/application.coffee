@@ -38,6 +38,7 @@ define (require, exports, module) ->
   require 'wiki/main'
   require 'bumblr/main'
   require 'hubby/main'
+  require 'github/main'
 
       
   app = new Marionette.Application()
