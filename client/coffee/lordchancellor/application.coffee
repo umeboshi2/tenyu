@@ -1,19 +1,21 @@
 define (require, exports, module) ->
-  $ = require 'jquery'
-  jQuery = require 'jquery'
-  _ = require 'underscore'
   Backbone = require 'backbone'
-  bootstrap = require 'bootstrap'
   Marionette = require 'marionette'
-  Wreqr = require 'backbone.wreqr'
+  #Wreqr = require 'backbone.wreqr'
   ft = require 'furniture'
-
+  require 'bootstrap'
+  
   handles = ft.misc.mainhandles
   
   AppModel = require 'appmodel'
 
   
   MainChannel = Backbone.Wreqr.radio.channel 'global'
+
+  MainChannel.reqres.setHandler 'main:app:appmodel', ->
+    #console.log "setHandler main:app:appmodel"
+    AppModel
+  
 
 
   set_get_current_user_handler = ft.models.base.set_get_current_user_handler
@@ -35,9 +37,11 @@ define (require, exports, module) ->
   require 'frontdoor/main'
   
   app = new Marionette.Application()
+  # attach app to window
+  window.App = app
+
   app.ready = false
 
-  console.log AppModel
   
   user = MainChannel.reqres.request 'main:app:current-user'
   response = user.fetch()

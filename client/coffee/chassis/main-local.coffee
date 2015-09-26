@@ -32,6 +32,7 @@ require.config
     teacup: "#{components}/teacup/lib/teacup"
     underscore: "#{components}/lodash-compat/lodash"
     validation: "#{components}/backbone.validation/dist/backbone-validation-amd"
+    qs: "#{components}/qs/dist/qs"
 
     
     # applets
@@ -58,13 +59,23 @@ require.config
     bblocalStorage:
       deps: ['backbone']
       exports: 'Backbone.localStorage'
-
-require [
-  'application'
-  'furniture'
-  'frontdoor/main'
-  ], (App, ft) ->
-  # simple app starter
-  return ft.util.start_application(App)
-        
-        
+      
+  deps: ['require']
+  #FIXME
+  callback: (require) ->
+    'use strict'
+    filename = location.pathname.match(/\/([^\/]*)$/)
+    console.log "Filename #{filename}"
+    modulename = undefined
+    if filename and filename[1] isnt "" or filename[0] == '/'
+      modulename = [
+        #"app"
+        #filename[1].split(".")[0]
+        "application"
+      ].join("/")
+      require [modulename, 'furniture'], (App, ft) ->
+        return ft.util.start_application(App)
+    else
+      console.log "no modulename found via location.pathname"  if window.console
+    return
+    

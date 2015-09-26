@@ -38,13 +38,14 @@ define (require, exports, module) ->
   require 'wiki/main'
   require 'bumblr/main'
   require 'hubby/main'
-  
 
       
   app = new Marionette.Application()
+  # attach app to window
+  window.App = app
+
   app.ready = false
 
-  console.log AppModel
   
   user = MainChannel.reqres.request 'main:app:current-user'
   response = user.fetch()

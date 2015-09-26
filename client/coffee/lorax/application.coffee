@@ -1,13 +1,10 @@
 define (require, exports, module) ->
-  $ = require 'jquery'
-  jQuery = require 'jquery'
-  _ = require 'underscore'
   Backbone = require 'backbone'
-  bootstrap = require 'bootstrap'
   Marionette = require 'marionette'
-  Wreqr = require 'backbone.wreqr'
+  #Wreqr = require 'backbone.wreqr'
   ft = require 'furniture'
-
+  require 'bootstrap'
+  
   handles = ft.misc.mainhandles
   
   AppModel = require 'appmodel'
@@ -16,7 +13,7 @@ define (require, exports, module) ->
   MainChannel = Backbone.Wreqr.radio.channel 'global'
 
   MainChannel.reqres.setHandler 'main:app:appmodel', ->
-    console.log "setHandler main:app:appmodel"
+    #console.log "setHandler main:app:appmodel"
     AppModel
   
 
@@ -41,6 +38,7 @@ define (require, exports, module) ->
   require 'wiki/main'
   require 'vtdendro/main'
 
+      
   app = new Marionette.Application()
   # attach app to window
   window.App = app
