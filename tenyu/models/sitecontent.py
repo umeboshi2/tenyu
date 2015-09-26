@@ -13,11 +13,13 @@ from sqlalchemy import Enum
 
 from sqlalchemy.orm import relationship, backref
 
-from trumpet.models.base import DBSession, Base, SerialBase
+from chert.alchemy import SerialBase, Base
+
+from trumpet.models.base import DBSession
 
 from sqlalchemy.exc import IntegrityError
 
-class SiteImage(Base, SerialBase):
+class SiteImage(SerialBase, Base):
     __tablename__ = 'site_images'
     id = Column(Integer, primary_key=True)
     name = Column(Unicode(200), unique=True)
@@ -48,7 +50,7 @@ VALID_TEXT_TYPES = ['html',
 
 SiteTextType = Enum(*VALID_TEXT_TYPES, name='site_text_type')
 
-class SiteText(Base, SerialBase):
+class SiteText(SerialBase, Base):
     __tablename__ = 'site_text'
     id = Column(Integer, primary_key=True)
     name = Column(Unicode(200), unique=True)

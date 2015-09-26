@@ -10,6 +10,8 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 
+from chert.alchemy import Base
+
 from tenyu.scrapers.silvicstoc import SilvicsToCCollector
 from tenyu.scrapers.wikipedia import WikiCollector
 from tenyu.scrapers.vtdendro import VTDendroCollector, TREEINFO_KEYS
@@ -17,8 +19,6 @@ from tenyu.scrapers.vtdendro import VTDendroCollector, TREEINFO_KEYS
 from tenyu.scrapers.wikipedia import get_wikipedia_pages_for_vt
 from tenyu.scrapers.wikipedia import get_wikipedia_pages_for_silvics
 from tenyu.scrapers.wikipedia import WikiCollector, cleanup_wiki_page
-
-from trumpet.models.base import Base
 
 
 from tenyu.models.truffula import URI
@@ -29,7 +29,16 @@ from tenyu.models.truffula import VTLooksLike, VTPicture
 
 
 here = os.getcwd()
-settings = {'sqlalchemy.url' : 'sqlite:///%s/tenyu.sqlite' % here}
+if len(sys.argv) > 1:
+    inifile = sys.argv[1]
+    from ConfigParser import ConfigParser
+    cfg = ConfigParser()
+    cfg.read([inifile])
+    cfg.set('app:main', 'here', here)
+    
+    settings = dict(cfg.items('app:main'))
+else:
+    settings = {'sqlalchemy.url' : 'sqlite:///%s/truffula.sqlite' % here}
 engine = engine_from_config(settings)
 Base.metadata.create_all(engine)
 Session = sessionmaker()

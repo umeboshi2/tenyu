@@ -14,7 +14,12 @@ from sqlalchemy.orm import relationship, backref
 
 from sqlalchemy.ext.declarative import declarative_base
 
-from trumpet.models.base import DBSession, Base, SerialBase
+from chert.alchemy import SerialBase, TimeStampMixin
+
+
+# Truffula gets it's own database
+from sqlalchemy.ext.declarative import declarative_base
+Base = declarative_base()
 
 
 ####################################
@@ -33,7 +38,7 @@ VTPictureType = Enum('flower', 'leaf', 'form', 'fruit',
 ## Tables                         ##
 ####################################
 
-class URI(Base, SerialBase):
+class URI(SerialBase, Base):
     __tablename__ = 'trf_global_uri_table'
     id = Column(Integer, primary_key=True)
     identifier = Column(Unicode, unique=True)
@@ -42,23 +47,23 @@ class URI(Base, SerialBase):
     updated = Column(DateTime)
 
 
-class Genus(Base, SerialBase):
+class Genus(SerialBase, Base):
     __tablename__ = 'trf_genus_list'
     id = Column(Integer, primary_key=True)
     name = Column(Unicode, unique=True)
 
-class GenusWiki(Base, SerialBase):
+class GenusWiki(SerialBase, Base):
     __tablename__ = 'trf_genus_wikipages'
     id = Column(Integer, ForeignKey('trf_genus_list.id'), primary_key=True)
     content = Column(Unicode)
 
-class SpecName(Base, SerialBase):
+class SpecName(SerialBase, Base):
     __tablename__ = 'trf_species_list'
     id = Column(Integer, primary_key=True)
     name = Column(Unicode, unique=True)
     
 
-class Species(Base, SerialBase):
+class Species(SerialBase, Base):
     __tablename__ = 'trf_species_table'
     genus_id = Column(Integer,
                       ForeignKey('trf_genus_list.id'), primary_key=True)
@@ -66,14 +71,14 @@ class Species(Base, SerialBase):
                      ForeignKey('trf_species_list.id'), primary_key=True)
     cname = Column(Unicode)
 
-class SimpleDescription(Base, SerialBase):
+class SimpleDescription(SerialBase, Base):
     __tablename__ = 'trf_simple_descriptions'
     id = Column(Integer, primary_key=True)
     type = Column(SimpleDescriptionType)
     text = Column(Unicode)
     
 
-class VTSpecies(Base, SerialBase):
+class VTSpecies(SerialBase, Base):
     __tablename__ = 'trf_vt_species_table'
     id = Column(Integer, primary_key=True)
     genus_id = Column(Integer, ForeignKey('trf_genus_list.id'))
@@ -89,14 +94,14 @@ class VTSpecies(Base, SerialBase):
     data = Column(PickleType)
     wikipage = Column(Unicode)
     
-class VTLooksLike(Base, SerialBase):
+class VTLooksLike(SerialBase, Base):
     __tablename__ = 'trf_vt_looks_likes'
     spec_id = Column(Integer,
                      ForeignKey('trf_vt_species_table.id'), primary_key=True)
     like_id = Column(Integer,
                      ForeignKey('trf_vt_species_table.id'), primary_key=True)
 
-class VTPicture(Base, SerialBase):
+class VTPicture(SerialBase, Base):
     __tablename__ = 'trf_vt_pictures'
     id = Column(Integer,
                 ForeignKey('trf_vt_species_table.id'), primary_key=True)
@@ -104,7 +109,7 @@ class VTPicture(Base, SerialBase):
     #text = Column(Unicode)
     url = Column(Unicode)
     
-class WikiPage(Base, SerialBase):
+class WikiPage(SerialBase, Base):
     __tablename__ = 'trf_wiki_pages'
     id = Column(Integer, primary_key=True)
     name = Column(Unicode, unique=True)

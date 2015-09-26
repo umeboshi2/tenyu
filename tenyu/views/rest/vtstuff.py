@@ -22,7 +22,7 @@ from tenyu.scrapers.wikipedia import WikiCollector
 from tenyu.scrapers.vtdendro import url_prefix
 
 from tenyu.views.rest import APIROOT
-
+        
 
 rscroot = os.path.join(APIROOT, 'main')
 
@@ -37,7 +37,7 @@ vtspecies_path = os.path.join(rscroot, 'vtspecies')
 class GenusView(BaseResource):
     def __init__(self, request):
         super(GenusView, self).__init__(request)
-        self.mgr = GenusManager(self.db)
+        self.mgr = GenusManager(request.trfdb)
         self.limit = 25
         
     def collection_query(self):
@@ -61,7 +61,7 @@ class GenusView(BaseResource):
 class SpecNameView(BaseResource):
     def __init__(self, request):
         super(SpecNameView, self).__init__(request)
-        self.mgr = SpecNameManager(self.db)
+        self.mgr = SpecNameManager(request.trfdb)
         self.limit = 25
         
     def collection_query(self):
@@ -73,9 +73,9 @@ class SpecNameView(BaseResource):
 class VTSpeciesView(BaseResource):
     def __init__(self, request):
         super(VTSpeciesView, self).__init__(request)
-        self.mgr = VTSpeciesManager(self.db)
+        self.mgr = VTSpeciesManager(request.trfdb)
         self.limit = 25
-        self.genus_mgr = GenusManager(self.db)
+        self.genus_mgr = GenusManager(request.trfdb)
         self.wikicollector = WikiCollector()
 
     def serialize_object_for_collection_query(self, dbobj):

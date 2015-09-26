@@ -20,6 +20,7 @@ from tenyu.scrapers.wikipedia import WikiCollector, cleanup_wiki_page
 
 from tenyu.scrapers.vtdendro import url_prefix
 
+
 APIROOT = '/rest/v0'
 
 rscroot = os.path.join(APIROOT, 'main')
@@ -31,7 +32,7 @@ wiki_path = os.path.join(rscroot, 'wikipage')
 class WikiPageView(BaseResource):
     def __init__(self, request):
         super(WikiPageView, self).__init__(request)
-        self.mgr = WikiPageManager(self.db)
+        self.mgr = WikiPageManager(request.trfdb)
         self.wikicollector = WikiCollector()
         self.limit = 25
 

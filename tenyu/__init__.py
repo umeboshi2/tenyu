@@ -2,31 +2,50 @@ from pyramid.config import Configurator
 from sqlalchemy import engine_from_config
 from sqlalchemy.orm import sessionmaker
 
+from chert.alchemy import Base
 
 from trumpet.security import authn_policy, authz_policy
 from trumpet.config import add_static_views
 
-from trumpet.models.base import DBSession, Base
+from trumpet.models.base import DBSession, make_scoped_session
+
 from trumpet.models.usergroup import User
 
 import tenyu.models.sitecontent
+from tenyu.models.truffula import Base as TRFBase
 
 # FIXME -- APIROOT needs to be in config
 APIROOT = '/rest/v0'
 
+
+
+def make_truffula_session(settings):
+    dburl = settings['truffuladb.url']
+    dbsettings = {'sqlalchemy.url' : dburl}
+    engine = engine_from_config(dbsettings)
+    session_class = make_scoped_session()
+    session_class.configure(bind=engine)
+    TRFBase.metadata.bind = engine
+    return session_class
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
+    trfsession = make_truffula_session(settings)
+    settings['trfdb.sessionmaker'] = trfsession
+    
     engine = engine_from_config(settings, 'sqlalchemy.')
     settings['db.sessionmaker'] = DBSession
     settings['db.usermodel'] = User
     settings['db.usernamefield'] = 'username'
 
+
+    
     DBSession.configure(bind=engine)
     Base.metadata.bind = engine
     Base.metadata.create_all(engine)
     root_factory = 'trumpet.resources.RootGroupFactory'
-    request_factory = 'trumpet.request.AlchemyRequest'
+    request_factory = 'tenyu.request.TenyuRequest'
     config = Configurator(settings=settings,
                           root_factory=root_factory,
                           request_factory=request_factory,
