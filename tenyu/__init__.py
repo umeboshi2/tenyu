@@ -12,6 +12,8 @@ from trumpet.models.base import DBSession, make_scoped_session
 from trumpet.models.usergroup import User
 
 import tenyu.models.sitecontent
+import chert.gitannex.annexdb.schema
+
 from tenyu.models.truffula import Base as TRFBase
 
 # FIXME -- APIROOT needs to be in config
@@ -53,6 +55,9 @@ def main(global_config, **settings):
                           authorization_policy=authz_policy)
     config.include('cornice')
     config.include('pyramid_beaker')
+    #config.include('pyramid_celery')
+    config.configure_celery(global_config['__file__'])
+    
     #config.add_static_view('static', 'static', cache_max_age=3600)
     client_view = 'tenyu.views.client.ClientView'
     config.add_route('home', '/')
@@ -73,12 +78,18 @@ def main(global_config, **settings):
     if serve_static_assets:
         add_static_views(config, settings)
         
+    config.add_route('repos_calendar', '/rest/v0/main/ghub/repocalendar')
+    config.add_view('tenyu.views.rest.ghub.RepoCalendarView',
+                    route_name='repos_calendar',
+                    renderer='json',)
+        
     config.scan('tenyu.views.rest.currentuser')
     config.scan('tenyu.views.rest.useradmin')
     config.scan('tenyu.views.rest.sitetext')
     config.scan('tenyu.views.rest.vtstuff')
     config.scan('tenyu.views.rest.wikipages')
     config.scan('tenyu.views.rest.ghub')
+    config.scan('tenyu.views.rest.gitannex')
     
     if 'default.vtimages.directory' in settings:
         vpath = settings['default.vtimages.directory']

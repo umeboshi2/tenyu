@@ -18,6 +18,8 @@ requires = [
     'beautifulsoup4',
     'lxml',
     'mechanize',
+    # testing
+    'celery',
     
     ]
 
