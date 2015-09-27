@@ -39,19 +39,38 @@ define (require, exports, module) ->
     tc.div '.listview-list'
 
   repo_list_entry = tc.renderable (repo) ->
+    local_status_icon = "fa-close"
+    if repo.local_repo_exists
+      local_status_icon = "fa-check"
     tc.div '.listview-list-entry', ->
       tc.span '.btn-default.btn-xs', ->
         tc.a href:"#github/editrepo/#{repo.id}",
         style:'color:black', ->
-          icon '.edit-page.fa.fa-pencil'
+          icon ".edit-repo.fa.#{local_status_icon}"
       tc.text "    " 
-      tc.a href:"#github/showrepo/#{repo.id}", repo.full_name
+      tc.a href:"#github/showrepo/#{repo.id}", ->
+        tc.text "#{repo.full_name} (#{repo.size} KB)"
         
   repo_list = tc.renderable () ->
     tc.div '.listview-header', ->
       tc.text 'github repos'
     tc.div '.listview-list'
 
+  repos_calendar = tc.renderable () ->
+    tc.div '.listview-header', 'Repos'
+    tc.div '#loading', ->
+      tc.h2 'Loading Repos...'
+    tc.div '#maincalendar'
+
+  show_repos = tc.renderable (repos) ->
+    tc.div '.listview-header', repos.full_name
+    tc.div '.listview-list', ->
+      for att in ['description', 'fork', 'default_branch',
+        'homepage', 'size', 'stargazers_count']
+        tc.div '.listview-list-entry', ->
+          tc.text "#{att}: #{repos[att]}"
+        
+    
       
   module.exports =
     frontdoor_main: frontdoor_main
@@ -60,3 +79,6 @@ define (require, exports, module) ->
     user_list: user_list
     repo_list_entry: repo_list_entry
     repo_list: repo_list
+    repos_calendar: repos_calendar
+    show_repos: show_repos
+    

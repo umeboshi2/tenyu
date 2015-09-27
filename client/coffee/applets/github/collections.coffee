@@ -23,6 +23,15 @@ define (require, exports, module) ->
   class GHRepoCollection extends BaseCollection
     model: Models.GHRepo
     url: '/rest/v0/main/ghub/repos'
+
+  class MyReposCollection extends GHRepoCollection
+    url: '/rest/v0/main/ghub/myrepos'
+
+  class OtherReposCollection extends GHRepoCollection
+    url: '/rest/v0/main/ghub/otherrepos'
+
+  class MyForksCollection extends GHRepoCollection
+    url: '/rest/v0/main/ghub/forkedrepos'
     
   main_user_collection = new GHUserCollection
   AppChannel.reqres.setHandler 'users:collection', ->
@@ -34,9 +43,18 @@ define (require, exports, module) ->
   main_repo_collection = new GHRepoCollection
   AppChannel.reqres.setHandler 'repos:collection', ->
     main_repo_collection
-      
+
+  AppChannel.reqres.setHandler 'myrepos:collection', ->
+    new MyReposCollection
+  AppChannel.reqres.setHandler 'others:collection', ->
+    new OtherReposCollection
+  AppChannel.reqres.setHandler 'myforks:collection', ->
+    new MyForksCollection
+    
   module.exports =
     GHUserCollection: GHUserCollection
     GHRepoCollection: GHRepoCollection
+    MyReposCollection: MyReposCollection
+    OtherReposCollection: OtherReposCollection
     
     
