@@ -24,14 +24,32 @@ import chert.gitannex.annexdb.archives as ARK
 
 from pyramid_celery import celery_app as app
 
+#from trumpet.models.base import DBSession
+from tenyu.managers.gitannex import AnnexFileManager
+
+POPULATE_ANNEXDB = 'POPULATE_ANNEXDB'
 
 @app.task
 def hello_world():
     return "Hello World!"
 
-@app.task
-def populate_database(session):
-    DBF.populate_database(session)
+
+
+@app.task(bind=True)
+def populate_annex_files(self, dburl, annex_directory):
+    #if not self.request.called_directly:
+    #    self.update_state(state='STARTED')
+    #self.request.id = POPULATE_ANNEXDB
+    #import time
+    #time.sleep(5)
+    sessionmaker = make_postgresql_session(dburl)
+    session = sessionmaker()
+    #session.commit()
+    mgr = AnnexFileManager(session, annex_directory)
+    mgr.populate_files()
+    session.commit()
+    
+    
 
 @app.task
 def populate_whereis(session):
