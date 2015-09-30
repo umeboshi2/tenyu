@@ -2,25 +2,20 @@ import os
 
 from setuptools import setup, find_packages
 
+# libjpeg-dev
+# libopenjpeg-dev
+# libtiff5-dev
+# libfreetype6-dev
+# liblcms2-dev
+# libwebp-dev
+# tk-dev
+# libxml2-dev
+# libxslt1-dev
+# libev-dev
+
+
 requires = [
-    'SQLAlchemy',
-    'psycopg2',        # dbapi for postgresql
-    'transaction',     # I am not sure if I should use this or not
-    'pyramid',
-    'pyramid_tm',
-    'pyramid_debugtoolbar',
-    'zope.sqlalchemy',
-    'pyramid-beaker',
-    'pyramid-mako',
-    'waitress',
-    'requests',
-    'cornice',
-    'beautifulsoup4',
-    'lxml',
-    'mechanize',
-    # testing
-    'celery',
-    
+    'trumpet',
     ]
 
 setup(name='tenyu',
