@@ -27,19 +27,14 @@ define (require, exports, module) ->
   handles.set_mainpage_init_handler()
   handles.set_main_navbar_handler()
 
-  #layout = Views.BootstrapNoGridLayout
-  #navbar = Views.BootstrapNavBarView
-  #MainPage.set_init_page_handler MainBus, 'nogridpage', layout, navbar
-
-  
-  
   # require applets
   require 'frontdoor/main'
   require 'wiki/main'
   require 'bumblr/main'
   require 'hubby/main'
   require 'github/main'
-
+  require 'gitannex/main'
+  
       
   app = new Marionette.Application()
   # attach app to window

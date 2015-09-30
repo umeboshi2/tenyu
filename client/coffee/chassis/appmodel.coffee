@@ -30,6 +30,11 @@ define (require, exports, module) ->
           name: 'Hubby'
           url: '#hubby'
         }
+        {
+          appname: 'gitannex'
+          name: 'Git Annex'
+          url: '#gitannex'
+        }
       ]
     regions: AppRegions.user_appregions
     frontdoor_sidebar:
