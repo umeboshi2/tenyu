@@ -1,4 +1,5 @@
 from datetime import datetime
+import hashlib
 
 import transaction
 
@@ -14,33 +15,32 @@ from sqlalchemy import Enum
 from sqlalchemy.orm import relationship, backref
 
 from chert.alchemy import SerialBase, Base
+from chert.alchemy import TimeStampMixin
+
 
 from trumpet.models.base import DBSession
 
 from sqlalchemy.exc import IntegrityError
 
-class SiteImage(SerialBase, Base):
+#class SiteImage(TimeStampMixin, Base):
+#    __tablename__ = 'site_images'
+#    id = Column(Integer, primary_key=True)
+#    name = Column(Unicode(200), unique=True)
+#    filename = Column(Unicode)
+#    thumbnail = Column(PickleType)
+#    
+#    def __repr__(self):
+#        return self.name
+
+class SiteImage(TimeStampMixin, Base):
     __tablename__ = 'site_images'
     id = Column(Integer, primary_key=True)
-    name = Column(Unicode(200), unique=True)
-    content = Column(PickleType)
+    checksum = Column(Unicode(64))
     thumbnail = Column(PickleType)
-    created = Column(DateTime)
-    modified = Column(DateTime)
     
-    def __init__(self, name=None, content=None):
-        self.name = name
-        self.content = content
-        
     def __repr__(self):
-        return self.name
+        return self.checksum
 
-    def serialize2(self):
-        data = dict(id=self.id, name=self.name,
-                    content=self.content, thumbnail=self.thumbnail)
-        return data
-    
-    
         
 VALID_TEXT_TYPES = ['html',
                     'rst', # restructured text
@@ -50,21 +50,19 @@ VALID_TEXT_TYPES = ['html',
 
 SiteTextType = Enum(*VALID_TEXT_TYPES, name='site_text_type')
 
-class SiteText(SerialBase, Base):
+class SiteText(TimeStampMixin, Base):
     __tablename__ = 'site_text'
     id = Column(Integer, primary_key=True)
     name = Column(Unicode(200), unique=True)
     type = Column(Unicode(25))
     content = Column(UnicodeText)
-    created = Column(DateTime)
-    modified = Column(DateTime)
     
     def __init__(self, name=None, content=None, type='html'):
         self.name = name
         self.type = type
         self.content = content
-        self.created = datetime.now()
-        self.modified = datetime.now()
+        self.created_at = datetime.now()
+        self.updated_at = datetime.now()
 
         
 def populate_images(imagedir='images'):
