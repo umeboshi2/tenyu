@@ -21,7 +21,7 @@ define (require, exports, module) ->
   class SideBarView extends BaseSideBarView
       
   render_calendar_event = (calEvent, element) ->
-    calEvent.url = '#hubby/viewmeeting/' + calEvent.id
+    calEvent.url = "#hubby/viewmeeting/#{calEvent.id}"
     element.css
       'font-size' : '0.9em'
 
