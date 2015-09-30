@@ -10,6 +10,7 @@ from trumpet.config import add_static_views
 from trumpet.models.base import DBSession, make_scoped_session
 
 from trumpet.models.usergroup import User
+from trumpet.models.celery import CeleryTask
 
 import tenyu.models.sitecontent
 import chert.gitannex.annexdb.schema
@@ -90,9 +91,17 @@ def main(global_config, **settings):
     config.scan('tenyu.views.rest.wikipages')
     config.scan('tenyu.views.rest.ghub')
     config.scan('tenyu.views.rest.gitannex')
+    config.scan('tenyu.views.rest.siteimages')
+    config.scan('tenyu.views.rest.webobjects')
+    config.scan('tenyu.views.rest.dbadmin')
+
+    siteimages_resource = settings['default.siteimages.resource']
+    siteimages_path = settings['default.siteimages.directory']
+    config.add_static_view('siteimages', path=siteimages_path)
     
     if 'default.vtimages.directory' in settings:
+        vrsrc = settings['default.vtimages.resource']
         vpath = settings['default.vtimages.directory']
-        config.add_static_view('vtimages', path=vpath)
+        config.add_static_view(vrsrc, path=vpath)
 
     return config.make_wsgi_app()
