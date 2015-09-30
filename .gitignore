@@ -62,3 +62,9 @@ docs/_build/
 .#*
 
 /*.sqlite
+
+/data
+/images
+/vtimages
+
+
