@@ -26,4 +26,4 @@ define (require, exports, module) ->
     controller = new Controller MainChannel
     router = new Router
       controller: controller
-    console.log 'sitetext router created'
+    #console.log 'sitetext router created'

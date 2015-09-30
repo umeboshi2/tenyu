@@ -25,7 +25,7 @@ define (require, exports, module) ->
       'useradmin/viewuser/:id': 'view_user'
 
   MainChannel.reqres.setHandler 'applet:useradmin:route', () ->
-    console.log 'applet:useradmin:route being handled'
+    #console.log 'applet:useradmin:route being handled'
     controller = new Controller MainChannel
     router = new Router
       controller: controller
