@@ -4,6 +4,9 @@ define (require, exports, module) ->
   #Wreqr = require 'backbone.wreqr'
   ft = require 'furniture'
   require 'bootstrap'
+  require 'bootstrap-fileinput'
+
+  require 'json-editor'
   
   handles = ft.misc.mainhandles
   
@@ -35,6 +38,10 @@ define (require, exports, module) ->
   require 'useradmin/main'
   require 'sitetext/main'
   require 'frontdoor/main'
+
+  require 'siteimages/main'
+  require 'dbadmin/main'
+  require 'webobjects/main'
   
   app = new Marionette.Application()
   # attach app to window

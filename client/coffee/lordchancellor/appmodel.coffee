@@ -23,10 +23,22 @@ define (require, exports, module) ->
           name: 'Site Text'
           url: '#sitetext'
         }
+        {
+          appname: 'siteimages'
+          name: 'Site Images'
+          url: '#siteimages'
+        }
+        {
+          appname: 'dbadmin'
+          name: 'DB Admin'
+          url: '#dbadmin'
+        }
+        {
+          appname: 'webobjects'
+          name: 'WebObjects'
+          url: '#webobjects'
+        }
       ]
     regions: ft.misc.appregions.user_appregions
   
   module.exports = appmodel
-  
-  
-    

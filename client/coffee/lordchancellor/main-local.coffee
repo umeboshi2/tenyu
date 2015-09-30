@@ -33,7 +33,8 @@ require.config
     underscore: "#{components}/lodash-compat/lodash"
     validation: "#{components}/backbone.validation/dist/backbone-validation-amd"
     qs: "#{components}/qs/dist/qs"
-
+    'bootstrap-fileinput': "#{components}/bootstrap-fileinput/js/fileinput.min"
+    'json-editor': "#{components}/json-editor/dist/jsoneditor"
     
   # FIXME:  try to reduce the shim to only the
   # necessary resources
@@ -53,6 +54,12 @@ require.config
     bblocalStorage:
       deps: ['backbone']
       exports: 'Backbone.localStorage'
+    'bootstrap-fileinput':
+      deps: ['jquery', 'bootstrap']
+    'json-editor':
+      deps: ['jquery', 'bootstrap']
+      exports: 'JSONEditor'
+      
     #qs:
     #  exports: 'qs'
       
