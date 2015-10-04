@@ -193,10 +193,49 @@ def handle_item(name, pathspec):
         return
     if name not in IGNORED:
         handle_generic_component(name, pathspec)
+
+def handle_isotope_pkgd():
+    dest = 'components/isotope/isotope.pkgd.js'
+    if not os.path.isfile(dest):
+        src = 'bower_components/isotope/dist/isotope.pkgd.js'
+        cmd = ['cp', '-a', src, dest]
+        subprocess.check_call(cmd)
+        print "Copied", dest
         
-    
 
+        
+def handle_isotope_layout():
+    dest_layouts = os.path.join(DEST_PATH, 'isotope/layout-modes')
+    if not os.path.isdir(dest_layouts):
+        os.makedirs(dest_layouts)
+    src_layouts = 'bower_components/isotope/js/layout-modes'
+    for basename in os.listdir(src_layouts):
+        destname = os.path.join(dest_layouts, basename)
+        if not os.path.isfile(destname):
+            cmd = ['cp', '-a', os.path.join(src_layouts, basename) , destname]
+            subprocess.check_call(cmd)
+            print "Copied", destname
+    for fname in ['layout-mode', 'item']:
+        dest = 'components/isotope/%s.js' % fname
+        if not os.path.isfile(dest):
+            src = 'bower_components/isotope/js/%s.js' % fname
+            cmd = ['cp', '-a', src, dest]
+            subprocess.check_call(cmd)
+            print "Copied", dest
 
+def copy_css():
+    fileinput = 'bootstrap-fileinput/css/fileinput.min.css'
+    filename = os.path.join(DEST_PATH, fileinput)
+
+    if os.path.isfile(filename):
+        basename = os.path.basename(filename)
+        destname = os.path.join('stylesheets', basename)
+        if not os.path.isfile(destname):
+            cmd = ['cp', '-a', filename, destname]
+            subprocess.check_call(cmd)
+            print "Copied %s" % destname
+            
+        
 
 
 
@@ -209,4 +248,6 @@ if __name__ == '__main__':
     ace_path = os.path.join(COMPONENT_PATH, 'ace')
     if os.path.isdir(ace_path):
         handle_ace_editor(DEST_PATH)
-        
+    handle_isotope_pkgd()
+    #handle_isotope_layout()
+    copy_css()
