@@ -4,33 +4,11 @@ from sqlalchemy.orm.exc import NoResultFound
 import transaction
 
 
-from trumpet.security import encrypt_password
+from trumpet.managers.base import BaseManager, GetByNameManager
 
 from chert.github.githubdb import GitHubUser, GitHubRepo
 from chert.github.repoman import RepoManager as BaseRepoManager
 
-class BaseManager(object):
-    def __init__(self, session):
-        self.session = session
-
-    def query(self):
-        return self.session.query(self.dbmodel)
-
-    def get(self, id):
-        return self.query().get(id)
-
-class GetByNameManager(BaseManager):
-    def get_by_name_query(self, name):
-        return self.query().filter_by(name=name)
-
-    def get_by_name(self, name):
-        q = self.get_by_name_query(name)
-        try:
-            return q.one()
-        except NoResultFound:
-            return None
-
-    
 
 class GHUserManager(object):
     def __init__(self, session, user_id):
@@ -77,6 +55,7 @@ class GHRepoManager(BaseRepoManager):
         query = query.filter(column <= end)
         return query
 
+    # range is when repo updated on github
     def updated_range_filter(self, start, end, query=None):
         if query is None:
             query = self.query()

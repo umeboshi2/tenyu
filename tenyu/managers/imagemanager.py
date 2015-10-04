@@ -9,7 +9,6 @@ import transaction
 
 from chert.urlrepo import ImageRepo
 
-from trumpet.security import encrypt_password
 from trumpet.managers.base import GetByNameManager
 
 from tenyu.models.sitecontent import SiteImage
@@ -67,16 +66,17 @@ class SiteImageManager(GetByNameManager):
             raise FilenameInDatabaseError, "%s already exists." % filename
 
         #localpath = self.imagerepo.
-        if self.imagerepo.file_exists(checksum):
+        if self.imagerepo.file_exists(checksum, ext):
             msg = "File %s already exists on filesystem." % checksum
             raise ImageFileExistsError, msg
-        self.imagerepo.import_content(content)
-        if not self.imagerepo.file_exists(checksum):
+        self.imagerepo.import_content(content, ext)
+        if not self.imagerepo.file_exists(checksum, ext):
             raise RuntimeError, "Problem creating %s" % checksum
         with transaction.manager:
             image = SiteImage()
             image.checksum = checksum
             image.thumbnail = make_thumbnail(content)
+            image.ext = ext
             self.session.add(image)
         return self.session.merge(image)
 
@@ -85,6 +85,11 @@ class SiteImageManager(GetByNameManager):
             image = self.session.query(SiteImage).get(id)
             image.delete()
 
+    def delete_everything(self):
+        with transaction.manager:
+            self.session.query(SiteImage).delete()
+        self.imagerepo.delete_all()
+        
 
-
+            
             

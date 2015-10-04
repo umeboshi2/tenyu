@@ -8,6 +8,7 @@ from tenyu.managers.gitannex import AnnexRepoManager
 mgr = AnnexRepoManager('ignore', '/freespace/annex')
 
 import tenyu.tasks.annexdb
+import tenyu.tasks.ghub
 
 
 
@@ -27,23 +28,6 @@ def update_sent_state(sender=None, body=None, **kwargs):
     #import pdb ; pdb.set_trace()
 
 @app.task
-def adder(x, y):
-    return x + y
-
-
-@app.task
 def gitannex_info():
     return mgr.get_info()
 
-@app.task
-def now():
-    return datetime.now()
-
-@app.task
-def long_task():
-    import time
-    length = 30
-    start = datetime.now()
-    time.sleep(length)
-    end = datetime.now()
-    return dict(start=start, end=end)

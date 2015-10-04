@@ -1,11 +1,13 @@
 import os
 from ConfigParser import ConfigParser
 from StringIO import StringIO
+import subprocess
+
 from sqlalchemy.orm.exc import NoResultFound
 import transaction
 
 
-from trumpet.security import encrypt_password
+from trumpet.managers.base import BaseManager
 from trumpet.managers.base import GetByNameManager
 
 from chert import gitannex
@@ -14,6 +16,7 @@ from chert.gitannex.procmgr import GitAnnexProcManager
 from chert.gitannex.annexdb.schema import AnnexRepository
 from chert.gitannex.annexdb.schema import AnnexKey, AnnexFile
 
+from tenyu.models.celerytasks import TenyuTask
 
 
 class AnnexRepoManager(GetByNameManager):
@@ -119,3 +122,20 @@ class AnnexFileManager(GetByNameManager):
         with transaction.manager:
             self.delete_everything()
             
+
+class GitAnnexUrlManager(BaseManager):
+    dbmodel = TenyuTask
+    def __init__(self, session, working_directory):
+        super(GitAnnexUrlManager, self).__init__(session)
+        self.working_directory = working_directory
+        self.running_proc = None
+        
+
+    def _addurl(self, url):
+        cmd = ['git-annex', 'addurl', url]
+        proc = subprocess.Popen(cmd, stdin=subprocess.PIPE,
+                                stdout=subprocess.PIPE,
+                                cwd=self.working_directory)
+        self.running_proc = proc
+
+    

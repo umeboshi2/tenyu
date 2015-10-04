@@ -22,22 +22,15 @@ from trumpet.models.celery import CeleryTask
 
 from sqlalchemy.exc import IntegrityError
 
-class WebObject(TimeStampMixin, Base):
-    __tablename__ = 'web_objects'
-    id = Column(Integer, primary_key=True)
-    name = Column(Unicode(200), unique=True)
-    type = Column(Unicode(200))
-    content = Column(JSONB)
-    
-    
-class AppModel(TimeStampMixin, Base):
-    __tablename__ = 'app_models'
-    id = Column(Integer, primary_key=True)
-    name = Column(Unicode(200), unique=True)
-    content = Column(JSONB)
-    
-class UserConfig(TimeStampMixin, Base):
-    __tablename__ = 'userconfig_json'
-    user_id = Column(Integer, ForeignKey('users.id'), primary_key=True)
-    content = Column(JSONB)
 
+class TenyuTask(TimeStampMixin, Base):
+    __tablename__ = 'tenyu_tasks'
+    id = Column(Integer, primary_key=True, nullable=False)
+    task_id = Column(Unicode(255))
+    name = Column(Unicode(200), unique=True)
+    data = Column(PickleType)
+    result = Column(Unicode(50))
+    
+
+
+    

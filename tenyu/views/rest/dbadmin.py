@@ -18,11 +18,6 @@ from trumpet.util import get_singleton_result
 from trumpet.util import SingletonNotPresentError
 
 
-from tenyu.managers.ghub import GHRepoManager, GHUserManager
-
-from tenyu.managers.gitannex import AnnexRepoManager
-from tenyu.managers.gitannex import AnnexFileManager
-
 from tenyu.managers.dbadmin import MainDBAdminManager
 
 from tenyu.views.rest import APIROOT
@@ -42,11 +37,13 @@ class MainDBAdminView(BaseResource):
         super(MainDBAdminView, self).__init__(request)
         settings = request.registry.settings
         annex_directory = settings['default.gitannex.annex_path']
+        self.siteimagepath = settings['default.siteimages.directory']
         self.annex_directory = annex_directory
         self.dburl = settings['sqlalchemy.url']
         self.session = request.db
         self.mgr = MainDBAdminManager(self.session, self.dburl,
-                                      self.annex_directory)
+                                      self.annex_directory,
+                                      self.siteimagepath)
         
 
     def post(self):
@@ -65,11 +62,13 @@ class MainDBAdminView(BaseResource):
         db = data['database']
         if db == 'gitannex':
             data = self.mgr.delete_annex_db()
+        elif db == 'siteimages':
+            data = self.mgr.delete_siteimages()
         return self.get()
 
     def get(self, inspector=None):
         data = dict()
-        data['gitannex'] = self.mgr.get_annex_info(inspector=inspector)
+        data = self.mgr.get_all_info(inspector=inspector)
         return data
           
     

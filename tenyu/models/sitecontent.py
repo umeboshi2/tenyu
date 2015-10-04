@@ -37,15 +37,15 @@ class SiteImage(TimeStampMixin, Base):
     id = Column(Integer, primary_key=True)
     checksum = Column(Unicode(64))
     thumbnail = Column(PickleType)
+    ext = Column(Unicode(64))
     
     def __repr__(self):
-        return self.checksum
+        return '%s.%s' % (self.checksum, self.ext)
 
         
 VALID_TEXT_TYPES = ['html',
                     'rst', # restructured text
                     'md', # markdown
-                    'tutwiki', # markdown text wiki tutorial
                     'text',] # just plain text
 
 SiteTextType = Enum(*VALID_TEXT_TYPES, name='site_text_type')
@@ -61,9 +61,6 @@ class SiteText(TimeStampMixin, Base):
         self.name = name
         self.type = type
         self.content = content
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
-
         
 def populate_images(imagedir='images'):
     import os

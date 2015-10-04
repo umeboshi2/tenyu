@@ -13,7 +13,11 @@ from trumpet.models.usergroup import User
 from trumpet.models.celery import CeleryTask
 
 import tenyu.models.sitecontent
+import tenyu.models.webobjects
+import tenyu.models.celerytasks
 import chert.gitannex.annexdb.schema
+from chert.github import make_client
+
 
 from tenyu.models.truffula import Base as TRFBase
 
@@ -31,11 +35,33 @@ def make_truffula_session(settings):
     TRFBase.metadata.bind = engine
     return session_class
 
+def make_github_client(settings):
+    user = settings['default.github.user']
+    password = settings['default.github.password']
+    client = make_client(user, password)
+    return client
+
+def clean_settings_for_serialization(settings):
+        # FIXME, need better way to clean up
+        # settings for serialization
+        settings = settings.copy()
+        badkeys = list()
+        for key in settings:
+            if key.startswith('debug') or key.endswith('sessionmaker'):
+                badkeys.append(key)
+        if 'db.usermodel' in settings:
+            badkeys.append('db.usermodel')
+        for key in badkeys:
+            del settings[key]
+        return settings
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
     trfsession = make_truffula_session(settings)
     settings['trfdb.sessionmaker'] = trfsession
+
+    settings['github_client'] = make_github_client(settings)
     
     engine = engine_from_config(settings, 'sqlalchemy.')
     settings['db.sessionmaker'] = DBSession
@@ -94,6 +120,7 @@ def main(global_config, **settings):
     config.scan('tenyu.views.rest.siteimages')
     config.scan('tenyu.views.rest.webobjects')
     config.scan('tenyu.views.rest.dbadmin')
+    config.scan('tenyu.views.rest.celerytasks')
 
     siteimages_resource = settings['default.siteimages.resource']
     siteimages_path = settings['default.siteimages.directory']

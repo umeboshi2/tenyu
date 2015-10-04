@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="${csspath}/font-awesome.css"/>
     <link rel="stylesheet" type="text/css" href="${csspath}/bootstrap-custom-${basecolor}.css"/>
+    <link rel="stylesheet" type="text/css" href="${csspath}/fileinput.min.css"/>
     <link rel="stylesheet" type="text/css" href="${csspath}/jqueryui-${basecolor}.css"/>
     <link rel="stylesheet" type="text/css" href="${csspath}/fullcalendar.css"/>
     <link rel="stylesheet" type="text/css" href="${csspath}/screen-${basecolor}.css"/>
@@ -16,5 +17,16 @@
     <script data-main="${jspath}/${appname}/main-local" src="${requirejs}" type="text/javascript"></script>
   </head>
   <body>
+    <div class="container-fluid">
+      <div class="row">
+	<div class="col-md-4"></div>
+	<div class="col-md-4">
+	  <h1 class="centered">Loading...
+	    <i class="fa fa-spinner fa-spin"></i>
+	  </h1>
+	</div>
+	<div class="col-md-4"></div>
+      </div>
+    </div>
   </body>
 </html>

@@ -18,7 +18,7 @@ class BaseWikiManager(object):
         self.session = session
 
     def query(self):
-        return self.session.query(SiteText).filter_by(type='tutwiki')
+        return self.session.query(SiteText)
 
     def get(self, id):
         return self.session.query(SiteText).get(id)
