@@ -24,11 +24,13 @@ define (require, exports, module) ->
   frontdoor_main = tc.renderable (page) ->
     tc.raw marked page.content
 
-  image_list_entry = tc.renderable (image) ->
-    tc.div '.listview-list-entry', ->
-      tc.a href: "#siteimages/showimage/#{image.id}", image.name
-      tc.img src: "data:image/jpeg;base64,#{image.thumbnail}"
-
+  image_list_item = tc.renderable (image) -> 
+    #tc.div '.label.label-default', ->
+    #tc.div '.listview-header', ->
+    tc.div '.well.well-sm', ->
+      tc.a href: "/siteimages/#{image.checksum}.#{image.ext}", ->
+        tc.img src: "data:image/jpeg;base64,#{image.thumbnail}"
+   
   new_image_uploader = tc.renderable () ->
     tc.form ->
       form_group_input_div
@@ -37,16 +39,25 @@ define (require, exports, module) ->
         input_attributes:
           name: 'imagefile'
           type: 'file'
+          multiple: 'multiple'
           placeholder: 'Select file...'
     
       
   image_list = tc.renderable () ->
     tc.div '.listview-header', ->
       tc.text 'Site Images'
-    tc.div '.listview-list'
     tc.div '#new-image-btn.btn.btn-default', 'Upload New Image'
     tc.div '#imageuploader', style:'display: none;', ->
       new_image_uploader()
+    tc.div '.mytoolbar.row', ->
+      tc.ul '.pager', ->
+        tc.li '.previous', ->
+          icon '#prev-page-button.fa.fa-arrow-left.btn.btn-default'
+        tc.li ->
+          icon '#slideshow-button.fa.fa-play.btn.btn-default'
+        tc.li '.next', ->
+          icon '#next-page-button.fa.fa-arrow-right.btn.btn-default'
+    tc.div '#images-container.row'
       
   show_image_view = tc.renderable (page) ->
     tc.div '.listview-header', ->
@@ -55,33 +66,14 @@ define (require, exports, module) ->
       tc.raw marked page.content
       
   
-  new_image_form = tc.renderable () ->
-    form_group_input_div
-      input_id: 'input_name'
-      label: 'Image Name'
-      input_attributes:
-        name: 'name'
-        placeholder: 'Image Name'
-    form_group_input_div
-      input_id: 'input_imagefile'
-      label: 'Image File'
-      input_attributes:
-        name: 'imagefile'
-        type: 'file'
-        placeholder: 'Select file...'
-    tc.input '.btn.btn-default.btn-xs', type: 'submit', value: 'Add'
-
-  _fileinput_icon = tc.renderable (name, size='2x') ->
+  fileinput_icon = tc.renderable (name, size='2x') ->
     icon ".fa.fa-#{name}.fa-#{size}"
 
-  fileinput_icon = _fileinput_icon
-  
   module.exports =
     frontdoor_main: frontdoor_main
-    image_list_entry: image_list_entry
+    image_list_item: image_list_item
     image_list: image_list
     show_image_view: show_image_view
-    new_image_form: new_image_form
     new_image_uploader: new_image_uploader
     fileinput_icon: fileinput_icon
     

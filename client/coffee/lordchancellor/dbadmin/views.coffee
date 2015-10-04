@@ -30,17 +30,19 @@ define (require, exports, module) ->
   class FrontDoorMainView extends Backbone.Marionette.ItemView
     template: Templates.frontdoor_main
     ui:
-      populate_btn: '#populatedb'
-      delete_btn: '#deletedb'
-      setuprepos_btn: '#setuprepos'
-      
+      populate_gitannex_btn: '#populate-gitannex'
+      delete_gitannex_btn: '#delete-gitannex'
+      delete_siteimages_btn: '#delete-site-images'
+        
     events:
-      'click @ui.populate_btn': 'populate_database'
-      'click @ui.delete_btn': 'delete_database'
+      'click @ui.populate_gitannex_btn': 'populate_gitannex_database'
+      'click @ui.delete_gitannex_btn': 'delete_gitannex_database'
+      'click @ui.delete_siteimages_btn': 'delete_siteimages'
+
       
-    populate_database: () ->
+    populate_gitannex_database: () ->
       console.log "{POPULATE_DATABASE}"
-      @ui.populate_btn.hide()
+      @ui.populate_gitannex_btn.hide()
 
       action = 'populate_database'
       data =
@@ -51,19 +53,25 @@ define (require, exports, module) ->
         window.response = response
         @model.set response.responseJSON
         @render()
-        
-    delete_database: () ->
-      console.log "{DELETE_DATABASE}"
-      @ui.delete_btn.hide()
+
+    _delete_db: (database) ->
       data =
-        database: 'gitannex'
-        
+        database: database
       response = make_json_post baseURL, data, 'DELETE'
       response.done =>
         window.response = response
         @model.set response.responseJSON
         @render()
-
+        
+    delete_gitannex_database: () ->
+      console.log "{DELETE_DATABASE}"
+      @ui.delete_gitannex_btn.hide()
+      @_delete_db 'gitannex'
+        
+    delete_siteimages: ->
+      console.log "{DELETE_SITEIMAGES}"
+      @ui.delete_siteimages_btn.hide()
+      @_delete_db 'siteimages'
     
 
   class SideBarView extends BaseSideBarView

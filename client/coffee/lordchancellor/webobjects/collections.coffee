@@ -20,14 +20,13 @@ define (require, exports, module) ->
   mainURL = "#{baseURL}/main"
   adminURL = "#{baseURL}/admin"
 
-  class SiteImageCollection extends BaseCollection
-    model: Models.SiteImage
+  class WebObjectCollection extends BaseCollection
     url: mainURL
 
-  site_image_collection = new SiteImageCollection
+  webobject_collection = new WebObjectCollection
   AppChannel.reqres.setHandler 'collection:webobjects', ->
-    site_image_collection
+    webobject_collection
 
 
   module.exports =
-    SiteImageCollection: SiteImageCollection
+    WebObjectCollection: WebObjectCollection

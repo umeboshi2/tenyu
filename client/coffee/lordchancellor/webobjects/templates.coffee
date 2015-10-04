@@ -17,72 +17,97 @@ define (require, exports, module) ->
   # The template must be a teacup.renderable, 
   # and accept a layout model as an argument.
 
+  { spanbutton
+  divbutton
+  modal_close_button } = ft.templates.buttons
+    
     
   ########################################
   # Templates
   ########################################
   frontdoor_main = tc.renderable (page) ->
-    tc.raw marked page.content
+    tc.div '#editor'
 
-  image_list_entry = tc.renderable (image) ->
-    tc.div '.listview-list-entry', ->
-      tc.a href: "#webobjects/showimage/#{image.id}", image.name
-      tc.img src: "data:image/jpeg;base64,#{image.thumbnail}"
-
-  new_image_uploader = tc.renderable () ->
-    tc.form ->
-      form_group_input_div
-        input_id: 'input_imagefile'
-        label: 'Image File'
-        input_attributes:
-          name: 'imagefile'
-          type: 'file'
-          placeholder: 'Select file...'
-    
-      
-  image_list = tc.renderable () ->
+  edit_webobject_main = tc.renderable (object) ->
     tc.div '.listview-header', ->
-      tc.text 'Site Images'
-    tc.div '.listview-list'
-    tc.div '#new-image-btn.btn.btn-default', 'Upload New Image'
-    tc.div '#imageuploader', style:'display: none;', ->
-      new_image_uploader()
+      tc.text "Editing #{object.name}"
+    tc.div '#save-button.btn.btn-default.btn-xs', ->
+      tc.text 'save'
+    form_group_input_div
+      input_id: 'object_name'
+      label: 'Object Name'
+      input_attributes:
+        name: 'name'
+        placeholder: 'New Object'
+        value: object.name
+    form_group_input_div
+      input_id: 'object_type'
+      label: "Object Type"
+      input_attributes:
+        name: 'type'
+        placeholder: 'appmodel'
+        value: object.type
+    tc.div '#alert'
+    tc.div '#editor'
+    
+  edit_webobject = tc.renderable (object) ->
+    tc.div '.listview-header', ->
+      tc.text "Editing #{object.name}"
+    tc.div '#save-button.btn.btn-default.btn-xs', ->
+      tc.text 'save'
+    form_group_input_div
+      input_id: 'object_name'
+      label: 'Object Name'
+      input_attributes:
+        name: 'name'
+        placeholder: 'New Object'
+        value: object.name
+    form_group_input_div
+      input_id: 'object_type'
+      label: "Object Type"
+      input_attributes:
+        name: 'type'
+        placeholder: 'appmodel'
+        value: object.type
+    tc.div '#alert'
+    tc.div '#editor'
+
+  ace_edit_object = tc.renderable (object) ->
+    tc.div '.listview-header', ->
+      tc.text "Editing #{object.name}"
+    tc.div '#save-button.btn.btn-default.btn-xs', ->
+      tc.text 'save'
+    tc.div '#editor'
+    
+
+  object_list_entry = tc.renderable (object) ->
+    tc.div '.listview-list-entry', ->
+      tc.a href: "#webobjects/editobject/#{object.id}", object.name
+      spanbutton ".ace-edit-object", ->
+        tc.i '.fa.fa-pencil'
       
-  show_image_view = tc.renderable (page) ->
+  object_list = tc.renderable () ->
+    tc.div '.listview-header', ->
+      tc.text 'Site Objects'
+    tc.div '.listview-list'
+    #tc.div '#new-object-btn.btn.btn-default', 'Upload New Object'
+    divbutton "#new-object-btn", "Upload New Object"
+     
+  show_object_view = tc.renderable (page) ->
     tc.div '.listview-header', ->
       tc.text page.name
     tc.div '.listview-list', ->
       tc.raw marked page.content
       
-  
-  new_image_form = tc.renderable () ->
-    form_group_input_div
-      input_id: 'input_name'
-      label: 'Image Name'
-      input_attributes:
-        name: 'name'
-        placeholder: 'Image Name'
-    form_group_input_div
-      input_id: 'input_imagefile'
-      label: 'Image File'
-      input_attributes:
-        name: 'imagefile'
-        type: 'file'
-        placeholder: 'Select file...'
-    tc.input '.btn.btn-default.btn-xs', type: 'submit', value: 'Add'
-
-  _fileinput_icon = tc.renderable (name, size='2x') ->
-    icon ".fa.fa-#{name}.fa-#{size}"
-
-  fileinput_icon = _fileinput_icon
-  
+  simple_alert = tc.renderable (message) ->
+    tc.div '.alert.alert-success.alert-dismissable', message
+    
   module.exports =
     frontdoor_main: frontdoor_main
-    image_list_entry: image_list_entry
-    image_list: image_list
-    show_image_view: show_image_view
-    new_image_form: new_image_form
-    new_image_uploader: new_image_uploader
-    fileinput_icon: fileinput_icon
-    
+    edit_webobject: edit_webobject
+    ace_edit_object: ace_edit_object
+    object_list_entry: object_list_entry
+    object_list: object_list
+    show_object_view: show_object_view
+    simple_alert: simple_alert
     

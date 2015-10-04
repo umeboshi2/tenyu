@@ -18,7 +18,8 @@ define (require, exports, module) ->
   # the sitetext collection, it will
   # do a PUT instead of POST.
   class GetPageModel extends BasePageModel
-    idAttribute: 'name'
+    #idAttribute: 'name'
+    idAttribute: 'id'
 
   class PostPageModel extends BasePageModel
     

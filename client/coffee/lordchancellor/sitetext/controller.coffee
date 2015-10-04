@@ -59,7 +59,7 @@ define (require, exports, module) ->
         model: page
       @_show_content view
             
-    show_page: (name) ->
+    show_page: (id) ->
       @make_sidebar()
       # we do this if/else in case this url is called
       # as the entry point.  This should probably be
@@ -70,16 +70,16 @@ define (require, exports, module) ->
         content.empty()
         response = @pages.fetch()
         response.done =>
-          page = @pages.get name
+          page = @pages.get id
           @_show_page page
       else
-        page = AppChannel.reqres.request 'get-page', name
+        page = AppChannel.reqres.request 'get-page', id
         @_show_page page
       
-    edit_page: (name) ->
+    edit_page: (id) ->
       @make_sidebar()
       #console.log "Get page named #{name} for editing"
-      page = AppChannel.reqres.request 'get-page', name
+      page = AppChannel.reqres.request 'get-page', id
       #console.log "Here is the page #{page}"
       view = new Views.EditPageView
         model: page

@@ -40,12 +40,6 @@ define (require, exports, module) ->
         @_show_content view
       window.images = images
       
-    add_image: () ->
-      @make_sidebar()
-      view = new Views.NewSiteImageFormView
-      @_show_content view
-      
-      
     start: ->
       #console.log 'controller.start called'
       @make_main_content()

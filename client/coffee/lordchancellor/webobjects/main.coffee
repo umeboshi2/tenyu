@@ -16,13 +16,17 @@ define (require, exports, module) ->
   class Router extends BootStrapAppRouter
     appRoutes:
       'webobjects': 'start'
-      'webobjects/listimages': 'list_images'
-      #'webobjects/showpage/:name' : 'show_page'
-      #'webobjects/editpage/:name': 'edit_page'
-      'webobjects/addimage': 'add_image'
+      'webobjects/addobject': 'add_object'
+      'webobjects/listobjects': 'list_objects'
+      'webobjects/editobject/:id': 'edit_object'
+      'webobjects/aceeditobject/:id': 'ace_edit_object'
+      
       
   MainChannel.reqres.setHandler 'applet:webobjects:route', () ->
     #console.log "webobjects:route being handled"
+    #objects = AppChannel.reqres.request 'collection:webobjects'
+    #response = objects.fetch()
+    #response.done =>
     controller = new Controller MainChannel
     router = new Router
       controller: controller

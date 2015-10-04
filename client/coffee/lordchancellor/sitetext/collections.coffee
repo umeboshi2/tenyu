@@ -17,16 +17,16 @@ define (require, exports, module) ->
 
   class PageCollection extends BaseCollection
     model: Models.GetPageModel
-    url: rscroot + '/sitetext'
-
+    url: "#{rscroot}/sitetextadmin"
+    
   main_page_list = new PageCollection
   AppChannel.reqres.setHandler 'get-pages', ->
     window.main_page_list = main_page_list
     main_page_list
 
-  AppChannel.reqres.setHandler 'get-page', (name) ->
-    #console.log "get-page #{name}"
-    main_page_list.get name
+  AppChannel.reqres.setHandler 'get-page', (id) ->
+    #console.log "get-page #{id}"
+    main_page_list.get id
     
   module.exports =
     PageCollection: PageCollection

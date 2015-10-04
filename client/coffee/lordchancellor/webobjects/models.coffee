@@ -10,7 +10,7 @@ define (require, exports, module) ->
   mainURL = "#{baseURL}/main"
   adminURL = "#{baseURL}/admin"
 
-  class SiteImage extends Backbone.Model
+  class WebObject extends Backbone.Model
     url: () ->
       "#{mainURL}/#{@id}"
 
@@ -18,16 +18,18 @@ define (require, exports, module) ->
       name:
         required: true
         msg: 'Name required.'
-      imagefile:
+
+      type:
         required: true
+        msg: 'Type required.'
 
 
-  AppChannel.reqres.setHandler 'images:get-image', (image_id) ->
-    m = new SiteImage
-      id: image_id
+  AppChannel.reqres.setHandler 'webobjects:get-object', (object_id) ->
+    m = new WebObject
+      id: object_id
     return m
   
   module.exports =
-    SiteImage: SiteImage
+    WebObject: WebObject
     
     

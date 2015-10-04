@@ -17,9 +17,7 @@ define (require, exports, module) ->
     appRoutes:
       'siteimages': 'start'
       'siteimages/listimages': 'list_images'
-      #'siteimages/showpage/:name' : 'show_page'
-      #'siteimages/editpage/:name': 'edit_page'
-      'siteimages/addimage': 'add_image'
+      #'siteimages/showimage/:name' : 'show_image'
       
   MainChannel.reqres.setHandler 'applet:siteimages:route', () ->
     #console.log "siteimages:route being handled"

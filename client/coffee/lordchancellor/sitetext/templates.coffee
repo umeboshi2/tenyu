@@ -19,11 +19,11 @@ define (require, exports, module) ->
   page_list_entry = tc.renderable (page) ->
     tc.div '.listview-list-entry', ->
       tc.span '.btn-default.btn-xs', ->
-        tc.a href:"#sitetext/editpage/#{page.name}",
+        tc.a href:"#sitetext/editpage/#{page.id}",
         style:'color:black', ->
           icon '.edit-page.fa.fa-pencil'
       tc.text "    "
-      tc.a href:"#sitetext/showpage/#{page.name}", page.name
+      tc.a href:"#sitetext/showpage/#{page.id}", page.name
         
       
   page_list = tc.renderable () ->
