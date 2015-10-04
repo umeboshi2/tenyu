@@ -132,10 +132,9 @@ define (require, exports, module) ->
       
 
     blog_dialog: (event) ->
-      console.log event
-      
-      modal = MainChannel.reqres.request 'main:app:get-region', 'modal'
-      modal.showModal modal.currentView
+      console.log "blog_dialog", event
+      #modal = MainChannel.reqres.request 'main:app:get-region', 'modal'
+      #modal.showModal modal.currentView
       
 
     manage_slideshow: () ->

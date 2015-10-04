@@ -5,32 +5,51 @@ define (require, exports, module) ->
   Backbone = require 'backbone'
   tc = require 'teacup'
   marked = require 'marked'
+  ft = require 'furniture'
   
-  # I use "icon" for font-awesome
-  icon = tc.i
-
   # Main Templates must use teacup.
   # The template must be a teacup.renderable, 
   # and accept a layout model as an argument.
-
+  { spanbutton
+  divbutton
+  modal_close_button } = ft.templates.buttons
     
   ########################################
   # Templates
   ########################################
   frontdoor_main = tc.renderable (page) ->
     tc.raw marked page.content
-    
+
+  # http://goodeggs.github.io/teacup/
+  caption = tc.component (selector, attrs, renderContents) ->
+    tc.div "#{selector}.caption", renderContents
+
+          
+
+  repo_info_dialog = tc.renderable (repo) ->
+    header = tc.renderable (text) ->
+      tc.h2 text
+    tc.div '.modal-dialog', ->
+      tc.div '.modal-content', ->
+        header repo.full_name
+        tc.div '.modal-body', ->
+          #for key, value of repo
+          #  tc.div ->
+          #    tc.text "#{key}: #{value}"
+          repo.url
+        tc.div '.modal-footer', ->
+          modal_close_button()
+
 
   show_main_user = tc.renderable (user) ->
     tc.div user.login
     
   user_list_entry = tc.renderable (user) ->
     tc.div '.listview-list-entry', ->
-      tc.span '.btn-default.btn-xs', ->
+      spanbutton ->
         tc.a href:"#github/edituser/#{user.id}",
         style:'color:black', ->
-          icon '.edit-page.fa.fa-pencil'
-      tc.text "    " 
+          tc.i '.edit-page.fa.fa-pencil'
       tc.a href:"#github/showuser/#{user.id}", user.login
         
   user_list = tc.renderable () ->
@@ -39,17 +58,16 @@ define (require, exports, module) ->
     tc.div '.listview-list'
 
   repo_list_entry = tc.renderable (repo) ->
-    local_status_icon = "fa-close"
-    if repo.local_repo_exists
-      local_status_icon = "fa-check"
     tc.div '.listview-list-entry', ->
-      tc.span '.btn-default.btn-xs', ->
-        tc.a href:"#github/editrepo/#{repo.id}",
-        style:'color:black', ->
-          icon ".edit-repo.fa.#{local_status_icon}"
-      tc.text "    " 
-      tc.a href:"#github/showrepo/#{repo.id}", ->
+      if not repo.local_repo_exists
+        spanbutton '.clone-repo', ->
+          tc.i '.fa.fa-download'
+        tc.raw "&nbsp;".repeat 5
+      tc.span '.center', ->
         tc.text "#{repo.full_name} (#{repo.size} KB)"
+      spanbutton ".ghub-repo-info", ->
+        tc.i '.fa.fa-info'
+      
         
   repo_list = tc.renderable () ->
     tc.div '.listview-header', ->
@@ -74,6 +92,7 @@ define (require, exports, module) ->
       
   module.exports =
     frontdoor_main: frontdoor_main
+    repo_info_dialog: repo_info_dialog
     show_main_user: show_main_user
     user_list_entry: user_list_entry
     user_list: user_list

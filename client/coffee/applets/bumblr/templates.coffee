@@ -27,13 +27,15 @@ define (require, exports, module) ->
 
 
   blog_dialog_view = tc.renderable (blog) ->
-    tc.div '.modal-header', ->
-      tc.h2 'This is a modal!'
-    tc.div '.modal-body', ->
-      tc.p 'here is some content'
-    tc.div '.modal-footer', ->
-      tc.button '#modal-cancel-button.btn', 'cancel'
-      tc.button '#modal-ok-button.btn.btn-default', 'Ok'
+    tc.div '.modal-content', ->
+      tc.div '.modal-header', ->
+        tc.h2 'This is a modal!'
+      tc.div '.modal-body', ->
+        tc.p 'here is some content'
+      tc.div '.modal-footer', ->
+        tc.button '#modal-cancel-button.btn', 'cancel'
+        tc.button '#modal-ok-button.btn.btn-default',
+        'data-dismiss': 'modal', 'Ok'
 
 
   simple_blog_list = tc.renderable () ->

@@ -7,17 +7,14 @@ define (require, exports, module) ->
 
   Templates = require 'github/templates'
 
-  # ace requirements
-  require 'ace/theme/twilight'
-  require 'ace/mode/markdown'
   
   MainChannel = Backbone.Wreqr.radio.channel 'global'
   AppChannel = Backbone.Wreqr.radio.channel 'github'
   
   FormView = ft.views.formview
-  { navigate_to_url } = ft.util
+  { navigate_to_url
+    make_json_post } = ft.util
     
-  BaseEditPageView = ft.views.editor
   BaseSideBarView = ft.views.sidebar
   
 
@@ -42,28 +39,23 @@ define (require, exports, module) ->
       
       
 
+  notify_task_complete = (task_id) ->
+    check_task_one = () ->
+      response = null
+      
   
-  
+  class SideBarView extends BaseSideBarView
+    
   class FrontDoorMainView extends Backbone.Marionette.ItemView
     template: Templates.frontdoor_main
 
-  class SideBarView extends BaseSideBarView
-    
-  class PageListEntryView extends Backbone.Marionette.ItemView
-    template: Templates.page_list_entry
-
-  class PageListView extends Backbone.Marionette.CompositeView
-    template: Templates.page_list
-    childView: PageListEntryView
-    childViewContainer: '.listview-list'
-    # handle new page button click
-    events:
-      'click #add-new-page-button': 'add_new_page_pressed'
+  class ModalView extends Backbone.Marionette.ItemView
+    template: Templates.repo_info_dialog
+    onDomRefresh: () ->
+      #console.log "show modal....."
+      #$('#modal').modal 'show'
       
-    add_new_page_pressed: () ->
-      #console.log 'add_new_page_pressed called'
-      navigate_to_url '#github/addpage'
-
+    
   class UserListEntryView extends Backbone.Marionette.ItemView
     template: Templates.user_list_entry
     
@@ -75,12 +67,37 @@ define (require, exports, module) ->
 
   class RepoListEntryView extends Backbone.Marionette.ItemView
     template: Templates.repo_list_entry
+    ui:
+      info_button: '.ghub-repo-info'
+      clone_button: '.clone-repo'
+      
+    events: ->
+      'click @ui.info_button': 'show_repo_info'
+      'click @ui.clone_button': 'clone_repo'
+
+    clone_repo: ->
+      console.log "Clone_Repo for #{@model.id}"
+      console.log @model
+      response = @model.save
+        action: 'clone-repo'
+      response.done =>
+        console.log "Task ID", @model.get('task_id')
+        
+    show_repo_info: ->
+      #console.log "Show info for #{@model.id}"
+      view = new ModalView
+        model: @model
+      modal_region = MainChannel.reqres.request 'main:app:get-region', 'modal'
+      modal_region.show view
+      #modal_region.showModal view
 
   class RepoListView extends Backbone.Marionette.CompositeView
     template: Templates.repo_list
     childView: RepoListEntryView
     childViewContainer: '.listview-list'
 
+      
+      
   class RepoCalendarView extends Backbone.Marionette.ItemView
     template: Templates.repos_calendar
     ui:
@@ -139,8 +156,8 @@ define (require, exports, module) ->
   
   module.exports =
     FrontDoorMainView: FrontDoorMainView
+    ModalView: ModalView
     SideBarView: SideBarView
-    PageListView: PageListView
     UserListView: UserListView
     RepoListView: RepoListView
     RepoCalendarView: RepoCalendarView
