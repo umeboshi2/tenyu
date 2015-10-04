@@ -86,5 +86,10 @@ $navbar-default-toggle-hover-bg:           #ddd;
 $navbar-default-toggle-icon-bar-bg:        #ccc;
 $navbar-default-toggle-border-color:       #ddd;
 
+// dropdown colors
+$dropdown-bg:  $navbar-default-bg;
+$dropdown-border: lighten($navbar-default-bg, 20%);
+$dropdown-link-hover-bg: darken($navbar-default-bg, 20%);
 
-
+// modal colors
+$modal-content-bg: $navbar-default-bg;
