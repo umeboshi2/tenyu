@@ -5,7 +5,7 @@ module.exports = (grunt) ->
   # foo = 'bar'
   _ = require 'lodash'
   app_dir = 'javascripts'
-    
+
   # config
   grunt.initConfig
     coffee:
@@ -35,6 +35,16 @@ module.exports = (grunt) ->
         config: 'config.rb'
         watch: true
         quiet: false
+
+    compress:
+      main:
+        options:
+          mode: 'gzip'
+        expand: true
+        cwd: 'stylesheets'
+        src: ['**/*.css']
+        dest: 'stylesheets'
+        ext: '.css.gz'
         
     shell:
       bower:
@@ -50,7 +60,7 @@ module.exports = (grunt) ->
           spawn: false
       compass:
         files: ['sass/**/*.scss']
-        tasks: ['compass:watch']
+        tasks: ['compass:watch', 'compress']
         
     concurrent:
       watchers:
@@ -63,7 +73,7 @@ module.exports = (grunt) ->
         src: ['javascripts/**/*.js']
       emacs:
         src: ['**/*~']
-        
+ 
     # ###########################
     # no targets below this line
     # ###########################
@@ -94,9 +104,15 @@ module.exports = (grunt) ->
       'shell:bower'
       'coffee:compile'
       'compass:compile'
+      'compress'
       'coffee:compileWithMaps'
       ]
 
     grunt.registerTask 'watchers', [
+      'shell:bower'
+      'coffee:compile'
+      'compass:compile'
+      'compress'
+      'coffee:compileWithMaps'
       'concurrent:watchers'
       ]
