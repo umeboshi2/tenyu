@@ -8,8 +8,8 @@ define (require, exports, module) ->
   Templates = require 'wiki/templates'
 
   # ace requirements
-  require 'ace/theme/twilight'
-  require 'ace/mode/markdown'
+  require 'ace/theme-twilight'
+  require 'ace/mode-markdown'
   
   AppChannel = Backbone.Wreqr.radio.channel 'wiki'
   

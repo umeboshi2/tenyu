@@ -8,8 +8,8 @@ define (require, exports, module) ->
   Templates = require 'gitannex/templates'
 
   # ace requirements
-  require 'ace/theme/twilight'
-  require 'ace/mode/markdown'
+  require 'ace/theme-twilight'
+  require 'ace/mode-markdown'
   
   MainChannel = Backbone.Wreqr.radio.channel 'global'
   AppChannel = Backbone.Wreqr.radio.channel 'gitannex'
