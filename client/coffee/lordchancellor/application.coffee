@@ -12,7 +12,7 @@ define (require, exports, module) ->
   
   AppModel = require 'appmodel'
 
-  
+
   MainChannel = Backbone.Wreqr.radio.channel 'global'
 
   MainChannel.reqres.setHandler 'main:app:appmodel', ->
@@ -30,10 +30,9 @@ define (require, exports, module) ->
   handles.set_mainpage_init_handler()
   handles.set_main_navbar_handler()
 
-  #layout = Views.BootstrapNoGridLayout
-  #navbar = Views.BootstrapNavBarView
-  #MainPage.set_init_page_handler MainBus, 'nogridpage', layout, navbar
-
+  # FIXME - for "wiki pages", remove this and use sitetext
+  require 'wiki/main'
+  
   
   require 'useradmin/main'
   require 'sitetext/main'
@@ -47,14 +46,13 @@ define (require, exports, module) ->
   # attach app to window
   window.App = app
 
-  app.ready = false
-
   
   user = MainChannel.reqres.request 'main:app:current-user'
   response = user.fetch()
   response.done ->
     handles.prepare_app app, AppModel
-    app.ready = true
+    app.start()
+    
 
   
   module.exports = app
