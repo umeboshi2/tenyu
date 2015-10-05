@@ -101,6 +101,17 @@ def handle_ace_editor(components):
         os.makedirs(components_dir)
     cmd = ['cp', '-a', libdir, components_dir]
     subprocess.check_call(cmd)
+
+
+def handle_ace_builds(components):
+    libdir = os.path.join(COMPONENT_PATH, 'ace-builds/src-min')
+    print "LIBDIR", libdir
+    components_dir = os.path.join(components, 'ace-builds')
+    print "DEPLOY", components_dir
+    if not os.path.isdir(components_dir):
+        os.makedirs(components_dir)
+    cmd = ['cp', '-a', libdir, components_dir]
+    subprocess.check_call(cmd)
     
 def handle_requirejs(pathspec):
     filename = os.path.join(pathspec, 'require.js')
@@ -248,6 +259,10 @@ if __name__ == '__main__':
     ace_path = os.path.join(COMPONENT_PATH, 'ace')
     if os.path.isdir(ace_path):
         handle_ace_editor(DEST_PATH)
+    ace_builds_path = os.path.join(COMPONENT_PATH, 'ace-builds')
+    if os.path.isdir(ace_builds_path):
+        handle_ace_builds(DEST_PATH)
     handle_isotope_pkgd()
     #handle_isotope_layout()
-    copy_css()
+    if os.path.isdir('stylesheets'):
+        copy_css()
