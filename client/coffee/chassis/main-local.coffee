@@ -4,7 +4,8 @@ components = '../../components'
 require.config
   baseUrl: '../javascripts/chassis'
   paths:
-    ace: "#{components}/ace/lib/ace"
+    #ace: "#{components}/ace/lib/ace"
+    ace: "#{components}/ace-builds/src-min"
     backbone: "#{components}/backbone/backbone"
     'backbone.babysitter': "#{components}/backbone.babysitter/lib/backbone.babysitter"
     'backbone.paginator': "#{components}/backbone.paginator/lib/backbone.paginator"
@@ -30,9 +31,12 @@ require.config
     outlayer: "#{components}/outlayer"
     requirejs: "#{components}/requirejs/require"
     teacup: "#{components}/teacup/lib/teacup"
-    underscore: "#{components}/lodash-compat/lodash"
+    #underscore: "#{components}/lodash-compat/lodash"
+    underscore: "#{components}/underscore/underscore"
     validation: "#{components}/backbone.validation/dist/backbone-validation-amd"
     qs: "#{components}/qs/dist/qs"
+    'bootstrap-fileinput': "#{components}/bootstrap-fileinput/js/fileinput.min"
+    'json-editor': "#{components}/json-editor/dist/jsoneditor"
 
     
     # applets
@@ -42,6 +46,7 @@ require.config
     bumblr: '../applets/bumblr'
     wiki: '../applets/wiki'
     frontdoor: '../applets/frontdoor'
+    vtdendro: '../applets/vtdendro'
     
   # FIXME:  try to reduce the shim to only the
   # necessary resources
@@ -61,6 +66,14 @@ require.config
     bblocalStorage:
       deps: ['backbone']
       exports: 'Backbone.localStorage'
+    'bootstrap-fileinput':
+      deps: ['jquery', 'bootstrap']
+    'json-editor':
+      deps: ['jquery', 'bootstrap']
+      exports: 'JSONEditor'
+      
+    #qs:
+    #  exports: 'qs'
       
   deps: ['require']
   #FIXME
@@ -76,7 +89,7 @@ require.config
         "application"
       ].join("/")
       require [modulename, 'furniture'], (App, ft) ->
-        return ft.util.start_application(App)
+        App
     else
       console.log "no modulename found via location.pathname"  if window.console
     return
