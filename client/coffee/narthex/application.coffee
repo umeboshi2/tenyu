@@ -1,13 +1,11 @@
 define (require, exports, module) ->
-  $ = require 'jquery'
-  jQuery = require 'jquery'
-  _ = require 'underscore'
   Backbone = require 'backbone'
-  bootstrap = require 'bootstrap'
   Marionette = require 'marionette'
-  Wreqr = require 'backbone.wreqr'
+ 
+  #Wreqr = require 'backbone.wreqr'
   ft = require 'furniture'
-
+  require 'bootstrap'
+  
   handles = ft.misc.mainhandles
   
   AppModel = require 'appmodel'
@@ -25,25 +23,22 @@ define (require, exports, module) ->
   handles.set_mainpage_init_handler()
   handles.set_main_navbar_handler()
 
-  #layout = Views.BootstrapNoGridLayout
-  #navbar = Views.BootstrapNavBarView
-  #MainPage.set_init_page_handler MainBus, 'nogridpage', layout, navbar
-
-  
-  
+    
   require 'frontdoor/main'
       
   app = new Marionette.Application()
-  app.ready = false
+  # attach app to window
+  window.App = app
+  window.app = app
 
-  console.log AppModel
+  #console.log AppModel
   
   user = MainChannel.reqres.request 'main:app:current-user'
   response = user.fetch()
   response.done ->
     handles.prepare_app app, AppModel
-    app.ready = true
-    console.log "user #{user}"
+    app.start()
+    #console.log "user #{user}"
 
   
   module.exports = app
