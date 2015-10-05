@@ -43,9 +43,9 @@ define (require, exports, module) ->
     
     init_page: ->
       #console.log 'init_page', @App
-      view = new Views.BlogModal()
-      modal = MainChannel.reqres.request 'main:app:get-region', 'modal'
-      modal.show view
+      #view = new Views.BlogModal()
+      #modal = MainChannel.reqres.request 'main:app:get-region', 'modal'
+      #modal.show view
       
     set_header: (title) ->
       header = $ '#header'

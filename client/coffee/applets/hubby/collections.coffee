@@ -2,7 +2,8 @@ define (require, exports, module) ->
   $ = require 'jquery'
   _ = require 'underscore'
   Backbone = require 'backbone'
-
+  Marionette = require 'marionette'
+  
   Models = require 'hubby/models'
   AppChannel = Backbone.Wreqr.radio.channel 'hubby'
   

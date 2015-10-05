@@ -8,7 +8,6 @@ define (require, exports, module) ->
   ft = require 'furniture'
 
   Models = require 'vtdendro/models'
-  AppBus = require 'vtdendro/msgbus'
   
   CommonCollections = ft.collections
 
