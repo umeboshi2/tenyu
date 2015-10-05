@@ -8,10 +8,6 @@ define (require, exports, module) ->
   Models = require 'dbadmin/models'
 
   Templates = require 'dbadmin/templates'
-
-  # ace requirements
-  require 'ace/theme/twilight'
-  require 'ace/mode/markdown'
   
   MainChannel = Backbone.Wreqr.radio.channel 'global'
   AppChannel = Backbone.Wreqr.radio.channel 'dbadmin'
@@ -20,7 +16,6 @@ define (require, exports, module) ->
   { navigate_to_url
     make_json_post } = ft.util
     
-  BaseEditPageView = ft.views.editor
   BaseSideBarView = ft.views.sidebar
   
 

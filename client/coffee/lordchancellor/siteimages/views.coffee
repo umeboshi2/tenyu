@@ -5,7 +5,7 @@ define (require, exports, module) ->
   tc = require 'teacup'
   
   Masonry = require 'masonry'
-  Isotope = require 'isotope'
+  #Isotope = require 'isotope'
   imagesLoaded = require 'imagesloaded'
 
   #behaviors = {}
@@ -21,10 +21,6 @@ define (require, exports, module) ->
 
   Templates = require 'siteimages/templates'
 
-  # ace requirements
-  require 'ace/theme/twilight'
-  require 'ace/mode/markdown'
-  
   MainChannel = Backbone.Wreqr.radio.channel 'global'
   AppChannel = Backbone.Wreqr.radio.channel 'siteimages'
   
@@ -32,7 +28,6 @@ define (require, exports, module) ->
   { navigate_to_url
     make_json_post } = ft.util
     
-  BaseEditPageView = ft.views.editor
   BaseSideBarView = ft.views.sidebar
   
   
