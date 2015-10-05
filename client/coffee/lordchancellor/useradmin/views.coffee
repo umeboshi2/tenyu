@@ -20,6 +20,9 @@ define (require, exports, module) ->
     template: Templates.frontdoor_main
 
   class SideBarView extends BaseSideBarView
+
+  class DeleteUserDialog extends Backbone.Marionette.ItemView
+    template: Templates.delete_user_dialog
     
   class SimpleUserEntryView extends Backbone.Marionette.ItemView
     template: Templates.simple_user_entry
@@ -66,19 +69,27 @@ define (require, exports, module) ->
       new Models.Group
       
   class ViewUserView extends Backbone.Marionette.ItemView
-    events:
-      'click .delete-user-button': 'delete_user_pressed'
-      'click .confirm-delete-button': 'confirm_delete_pressed'
+    ui:
+      delete_user_button: '.delete-user-button'
       
+    events:
+      'click @ui.delete_user_button': 'delete_user_pressed'
+      #'click .delete-user-button': 'delete_user_pressed'
+      #'click .confirm-delete-button': 'confirm_delete_pressed'
     template: Templates.view_user_page
+      
 
     delete_user_pressed: ->
-      console.log 'delete_user_pressed'
-      button = $ '.delete-user-button'
-      button.removeClass 'delete-user-button'
-      button.addClass 'confirm-delete-button'
-      button.text 'Confirm'
-
+      #console.log 'delete_user_pressed'
+      #button = @ui.delete_user_button
+      #button.removeClass 'delete-user-button'
+      #button.addClass 'confirm-delete-button'
+      #button.text 'Confirm'
+      view = new DeleteUserDialog
+        model: @model
+      region = MainChannel.reqres.request 'main:app:get-region', 'modal'
+      region.show view
+      
     confirm_delete_pressed: ->
       console.log 'confirm_delete_pressed'
       button = $ '.confirm-delete-button'

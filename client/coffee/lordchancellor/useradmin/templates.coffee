@@ -8,17 +8,31 @@ define (require, exports, module) ->
   # and accept a layout model as an argument.
 
   { form_group_input_div } = ft.templates.forms
+
+  { spanbutton
+  divbutton
+  modal_close_button } = ft.templates.buttons
       
   ########################################
   # Templates
   ########################################
+  delete_user_dialog = tc.renderable (user) ->
+    tc.div '.modal-dialog', ->
+      tc.div '.modal-content', ->
+        tc.h2 "Delete User #{user.name}?"
+        tc.div '.modal-body', ->
+          "#{user.name}"
+        tc.div '.modal-footer', ->
+          modal_close_button()
+          spanbutton '.confirm-delete-button', 'Delete User'
+          
   simple_user_entry = tc.renderable (model) ->
     tc.div '.listview-list-entry', ->
-      tc.a href:'#useradmin/viewuser/' + model.id, model.name
+      tc.a href:"#useradmin/viewuser/#{model.id}", model.name
 
   simple_group_entry = tc.renderable (model) ->
     tc.div '.listview-list-entry', ->
-      tc.a href:'#useradmin/viewgroup/' + model.id, model.name
+      tc.a href:"#useradmin/viewgroup/#{model.id}", model.name
 
   simple_user_list = tc.renderable (users) ->
     tc.div '.listview-header', 'Users'
@@ -73,6 +87,7 @@ define (require, exports, module) ->
     
          
   module.exports =
+    delete_user_dialog: delete_user_dialog
     simple_user_entry: simple_user_entry
     simple_group_entry: simple_group_entry
     simple_user_list: simple_user_list
