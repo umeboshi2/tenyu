@@ -16,6 +16,8 @@ from setuptools import setup, find_packages
 
 requires = [
     'trumpet',
+    'youtube-dl',
+    'Kotti',
     ]
 
 setup(name='tenyu',
@@ -46,5 +48,6 @@ setup(name='tenyu',
       dependency_links=[
         'https://github.com/knowah/PyPDF2/archive/master.tar.gz#egg=PyPDF2-1.15dev',
         'https://github.com/umeboshi2/trumpet/archive/master.tar.gz#egg=trumpet',
+        'https://github.com/umeboshi2/Kotti/archive/master.tar.gz#egg=Kotti',
         ]
       )

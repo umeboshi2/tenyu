@@ -20,6 +20,7 @@ from chert.github import make_client
 
 
 from tenyu.models.truffula import Base as TRFBase
+import kotti
 
 # FIXME -- APIROOT needs to be in config
 APIROOT = '/rest/v0'
@@ -63,9 +64,11 @@ def main(global_config, **settings):
 
     settings['github_client'] = make_github_client(settings)
     
-    engine = engine_from_config(settings, 'sqlalchemy.')
-    settings['db.sessionmaker'] = DBSession
     settings['db.usermodel'] = User
+    settings['db.sessionmaker'] = DBSession
+    config = kotti.base_configure(global_config, **settings)
+    engine = engine_from_config(settings, 'sqlalchemy.')
+    kotti.resources.initialize_sql(engine)
     settings['db.usernamefield'] = 'username'
 
 
@@ -75,11 +78,12 @@ def main(global_config, **settings):
     Base.metadata.create_all(engine)
     root_factory = 'trumpet.resources.RootGroupFactory'
     request_factory = 'tenyu.request.TenyuRequest'
-    config = Configurator(settings=settings,
-                          root_factory=root_factory,
-                          request_factory=request_factory,
-                          authentication_policy=authn_policy,
-                          authorization_policy=authz_policy)
+    #config = Configurator(settings=settings,
+    #                      root_factory=root_factory,
+    #                      request_factory=request_factory,
+    #                      authentication_policy=authn_policy,
+    #                      authorization_policy=authz_policy)
+    
     config.include('cornice')
     config.include('pyramid_beaker')
     #config.include('pyramid_celery')
@@ -87,15 +91,15 @@ def main(global_config, **settings):
     
     #config.add_static_view('static', 'static', cache_max_age=3600)
     client_view = 'tenyu.views.client.ClientView'
-    config.add_route('home', '/')
+    config.add_route('home', '/tenyu')
     config.add_route('apps', '/app/{appname}')
     config.add_view(client_view, route_name='home')
     config.add_view(client_view, route_name='apps')
-    config.add_view(client_view, name='login')
-    config.add_view(client_view, name='logout')
+    #config.add_view(client_view, name='login')
+    #config.add_view(client_view, name='logout')
     # FIXME - get client view to understand it hit forbidden
-    config.add_view('tenyu.views.client.forbidden_view',
-                    context='pyramid.httpexceptions.HTTPForbidden')
+    #config.add_view('tenyu.views.client.forbidden_view',
+    #                context='pyramid.httpexceptions.HTTPForbidden')
     config.add_view(client_view, name='admin', permission='admin')
     # static assets
     serve_static_assets = False
